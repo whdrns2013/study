@@ -1,3 +1,4 @@
+package Java.java_practice_20230423.q4_9;
 public class q4_9 {
     public static void main (String[] args) {
         int[][] arry = new int [4][6];
