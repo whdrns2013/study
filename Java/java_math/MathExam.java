@@ -30,13 +30,18 @@ public class MathExam{
         System.out.println("부모 경로 : " + parent);
 
         //----파일의 parent, child를 이용해 경로 생성----//
-        File file4 = new File(path + "exam.png");
-        File parent2 = file4.getParent();
-        File files2[] = parent2.listFiles();
-        File filesFullPath[] = new File();
-        for (int i = 0; i < files2.length; i++){
+        // File file4 = new File(path + "exam.png");
+        // File parent2 = file4.getParent();
+        // File files2[] = parent2.listFiles();
+        // File filesFullPath[] = new File();
+        // for (int i = 0; i < files2.length; i++){
             
-        }
+        // }
+        
+        System.out.println("인덱싱");
+        File newpath = new File("hi");
+        files[0] = newpath;
+        System.out.println(files[0]);
 
     }
 }
