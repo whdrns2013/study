@@ -1,6 +1,10 @@
 import java.io.File;
 
+import org.junit.Test;
+
 public class MathExam{
+
+    @Test
     public static void main(String[] args){
 
         //----파일 경로 선언----//
