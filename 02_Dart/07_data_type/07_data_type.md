@@ -198,7 +198,80 @@ void main() {
 ```
 
 
+## Collection For
+
+collection for 는 list 자료형에 for 문을 추가해 원소를 추가하는 방법을 의미한다.  
+
+아래 예시를 보자.  
+(String Interpolation은 다음 챕터를 미리 보자)  
+
+```dart
+void main() {
+  var newMenues = ['Cart', 'HotDeal'];
+  // 원래 메뉴에 새로운 메뉴 추가. 별까지!
+  var navBar = ['Home', 'Dashboard', 'MyPage', 'Admin Setting', for(menu in newMenuews) '⭐️$menu'];
+  print(navBar);
+}
+==================
+// >> [Home, Dashboard, MyPage, Admin Setting, ⭐️Cart, ⭐️HotDeal]
+```
+
+언제 쓰면 좋을까? 메뉴를 예로 들어 collection for, collection if 와 함께 써보자.
+
+아래 예시는 회원의 권한별로 접근할 수 있는 메뉴를 출력하는 방법이다.  
+
+```dart
+void main() {
+  // 1 ~ 20 까지 홀수를 구하기 
+  var numberRange = Iterable<int>.generate(20, (index) => index +1);
+  List<int> oddNumber = [ for(int number in numberRange) if (number % 2 != 0) number ];
+  print(oddNumber);
+}
+==================
+// >> [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
+```
+
+
+## String Interpolation  
+
+String Interpolation  
+문자열 보간  
+
+![](./07_001.png)
+
+
+String Interpolation 은 String 문자열에 변수를 넣어 유동적으로 사용하는 방법이다.  
+
+방법은 간단한데, String 문자열의 표현법인 따옴표 안쪽에 달러($)표시를 쓰고, 그 다음에 비로 변수명을 적어주면 된다.  
+
+아래 예시를 보자.  
+
+```dart
+void main(){
+  String name = "Jongya";
+  String introduction = "Hi, my name is $name. nice to meet you.";
+  print(introduction);
+}
+// ====================
+// >> Hi, my name is Jongya. nice to meet you.
+```
+
+수식 계산이 필요한 경우엔 달러($) 표시 다음 중괄호{}로 묶어주면 된다.  
+
+```dart
+void main(){
+  String name = "Jongya";
+  int age = 10;
+  String introduction = "Hi, my name is $name. im ${age + 5} years old. nice to meet you.";
+  print(introduction);
+}
+// ====================
+// >> Hi, my name is Jongya. im 15 years old. nice to meet you.
+```
+
+
 ## Reference  
 
 노마드코더 - basic datatype : https://nomadcoders.co/dart-for-beginners/lectures/4101  
-노마드코더 - lists: https://nomadcoders.co/dart-for-beginners/lectures/4102  
+노마드코더 - lists : https://nomadcoders.co/dart-for-beginners/lectures/4102  
+노마드코더 - String Interpolation : https://nomadcoders.co/dart-for-beginners/lectures/4103  
