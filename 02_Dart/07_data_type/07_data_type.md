@@ -270,6 +270,71 @@ void main(){
 ```
 
 
+## map  
+
+JavaScript 나 TypeScript 의 Object, 그리고 파이썬의 Dictionary와 같다.  
+즉, Key:Vale 쌍 한 개 이상으로 이루어진 데이터 집합이다.  
+
+Map의 선언 방식은 var로 선언하는 방식, 그리고 데이터타입을 명시해서 선언하는 방식 두 가지이다.  
+
+```dart
+void main() {
+    
+    // Declaration with var
+    var player = {
+        'name' : 'jongya',
+        'level' : 20,
+        'job' : 'magician',
+        'superUser' : false,
+    };
+    
+    // Declaration with dataType
+    map<String, String> keyValue = {
+        'key' : 'value',
+        'name' : 'some name',
+    };
+}
+
+```
+
+
+그리고 map 데이터타입 안에는 또다른 Object 형식이 들어갈 수 있다.  
+이는 Key와 value 모두에 해당되는 이야기다.  
+
+```dart
+void main() {
+    // can input any object in key or value or both
+    Map<List<String>, String> auth = {
+        ['Home', 'DashBoard'] = 'guest',
+        ['Home', 'AdminPage'] = 'admin',
+    };
+
+    Map<String, List<int>> nums = {
+        'underFive' = [1, 2, 3, 4],
+        'underTen' = [5, 6, 7, 8, 9],
+    };
+    
+    // also can contain several types of obejcts
+    var someMap = {
+        'first' : 'dragon',
+        'second' : 100,
+        'third' : [10, 20, 30],
+        'real' : true,
+    }
+}
+```
+
+맵에는 유용한 메서드들이 많이 있다.  
+
+```dart
+void main() {
+    
+}
+
+```
+
+
+
 ## Reference  
 
 노마드코더 - basic datatype : https://nomadcoders.co/dart-for-beginners/lectures/4101  
