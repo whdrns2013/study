@@ -197,6 +197,8 @@ void main() {
 // >> [1, 2, 3, 4, 6]
 ```
 
+그리고 list에는 reduce, fold가 있는데.. => 추가
+
 
 ## Collection For
 
@@ -328,11 +330,97 @@ void main() {
 
 ```dart
 void main() {
-    
+  
+  // Methods
+  Map<int, String> someMap= {1:'first', 2:'second', 3:'third'};
+
+  // is it Empty?
+  print(someMap.isNotEmpty);  // >> true
+  print(someMap.isEmpty);     // >> false
+
+  // contains
+  print(someMap.containsKey(2));          // >> true
+  print(someMap.containsValue('fifth'));  // >> false
+
+  // get keys or values
+  print(someMap.keys);    // >> (1, 2, 3)
+  print(someMap.values);  // >> (first, second, third)
+
+  // addAll : 
+  someMap.addAll({1 : "change first", 4 : "four"});
+  print(someMap);   // >> {1: change first, 2: second, 3: third, 4: four}
+
+  // remove and clear
+  someMap.remove(2);
+  print(someMap);   // >> {1: change first, 3: third, 4: four}
+  someMap.clear();
+  print(someMap);   // >> {}
 }
 
 ```
 
+Map은 Entries 라는 개념이 있는데.. => 추가
+
+
+## Set
+
+set은 집합으로, 다른 여타 언어들의 set과 동일하다.  
+중복값을 허용하지 않는 Unique Value 특징이 있고, 원소의 순서가 없는 특징이 있다.  
+
+```dart
+void main() {
+    // declaration set
+    var numbers01 = {1, 2, 3, 4};
+    Set<int> numbers02 = {5, 6, 7, 8};
+
+    // set has unique values
+    var numbers03 = {1, 2, 3};
+    numbers03.add(1);
+    numbers03.add(2);
+    numbers03.add(4);
+    numbers03.add(5);
+    print(numbers03);  // >> {1, 2, 3, 4, 5}
+
+    // 순서는 없다.  
+    print({1, 2, 3}.containsAll({1, 2, 3}));  // >> true
+    print({1, 2, 3}.containsAll({3, 2, 1}));  // >> true
+
+    // methods
+    //    add
+    Set<String> text01 = {"a", "b", "c"};
+    text01.add("d");
+    print(text01);  // >> {"a", "b", "c", "d"}
+
+    text01.addAll({"z", "y"});
+    print(text01);  // >> {"a", "b", "c", "d", "z", "y"}
+
+    //    contains
+    print(text01.contains("b"));    // true
+
+    //    
+    print(text01.union({"a","b", "t"}));                // {a, b, c, d, z, y, t}
+    print(text01.intersection({"c", "d", "안녕하세요"}));  // {c, d}
+
+    //    remove
+    print("== remove ==");
+    print(text01.remove({"c", "d"}));    // >> false
+    
+    //    clear
+    print("== clear ==");
+    text01.clear();
+    print(text01);    // >> {}
+
+    // Attributes
+    text01.addAll({"a", "b", "c", "d"});
+    print(text01);               // >> {a, b, c, d}
+    print(text01.first);         // >> a
+    print(text01.length);        // >> 6
+    print(text01.isEmpty);       // >> true
+    print(text01.runtimeType);   // >> _Set<Strign>
+
+}
+
+```
 
 
 ## Reference  
