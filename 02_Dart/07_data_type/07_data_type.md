@@ -428,3 +428,6 @@ void main() {
 노마드코더 - basic datatype : https://nomadcoders.co/dart-for-beginners/lectures/4101  
 노마드코더 - lists : https://nomadcoders.co/dart-for-beginners/lectures/4102  
 노마드코더 - String Interpolation : https://nomadcoders.co/dart-for-beginners/lectures/4103  
+노마드코더 - String Interpolation : https://nomadcoders.co/dart-for-beginners/lectures/4104  
+노마드코더 - String Interpolation : https://nomadcoders.co/dart-for-beginners/lectures/4105  
+노마드코더 - String Interpolation : https://nomadcoders.co/dart-for-beginners/lectures/4106  

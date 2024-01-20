@@ -1,6 +1,6 @@
 
 void main() {
-  var result = var04();
+  var result = var06();
   print(result.toString() + " | " + result.runtimeType.toString());
 }
 
