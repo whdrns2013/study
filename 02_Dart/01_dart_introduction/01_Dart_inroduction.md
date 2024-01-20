@@ -28,9 +28,13 @@ https://whdrns2013.github.io/computerscience/20240113_004_jit_aot_compile/
 
 ## Null Safety  
 
-또한 Dart에서는 Null Safety 라는 기능을 지원하는데,  
-변수를 생성할 때 값이 null 일 수 있는지 여부를 명시적으로 지정할 수 있는 기능이다.  
-이 기능이 있음으로써 코드에서 발생할 수 있는 Null 관련 오류를 사전에 차단할 수 있다.  
+또한 Dart에서는 Null Safety 를 지향한다.  
+null safety 는 직역한 그대로 "null" 값에 대한 안전한 프로그래밍을 의미한다.  
+
+어떤 함수가 실행될 때, 변수가 null 인 경우 runtime 에러가 발생하게 된다.  
+dart는 이를 프로그래밍 당시에 막기 위해 함수에 null 값이 들어가지 않도록 하는 여러 가지 문법적 특징을 만들었다.  
+
+첫 번째는 nullable 변수로, 변수를 생성할 때 값이 null 일 수 있는지 여부를 명시적으로 지정할 수 있는 기능이다.  
 
 ```dart
 // 값이 Null이 아닌 변수의 선언 (기본)
@@ -40,6 +44,26 @@ String nonBullableString = null;             // -> 비정상 오류
 // 값이 Null일 수 있는 변수의 선언 (Null Safety)
 String? nullableString = "Hello, Dart";      // -> 정상 처리
 String? nullableString = null;               // -> 정상 처리
+```
+
+두 번째는 함수 선언시 Named Parameter 를 사용하는 것이다.  
+dart에서는 함수 선언이 여타 다른 언어의 파라미터 명시 방법 (dart에서는 Positional Parameter라고 함) 과 함께  
+Named Parameter 라는 파라미터 명시 방법을 가지고 있다.  
+
+이 Named Parameter 방식은 (1)함수 사용시 파라미터값으로 null을 받았을 때 발동하는 default value를 명시해주는 방법 
+(2) 혹은 파라미터 앞에 required modifier를 명시함으로써 프로그래밍 당시 파라미터가 입력되지 않으면 경고를 발생시키는 방법으로 구현된다.  
+
+```dart
+String introduction(
+    {String name = 'default name',
+    required level,
+    required job}) {
+  return "Hi $name. your level is $level, and you are $job";
+}
+
+void main() => print(introduction(level: 10, job: 'magician'));
+// >> Hi default name. your level is 10, and you are unemployed
+// >> 선
 ```
 
 ## Flutter 에서 Dart를 선택한 이유  
