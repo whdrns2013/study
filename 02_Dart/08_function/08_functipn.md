@@ -337,3 +337,59 @@ void main() {
 
 ## Typedef  
 
+typedef 는 자료형을 정의하는 함수이다.  
+클래스의 하위호환? 으로 보여진다.  
+
+우선, Map<String, String> 자료형을 이용하여 유저의 Id 와 Passwd 를 불러오는 는 아래와 같은 코드가 있다고 해보자.  
+
+```dart
+Map<String, String> getIdPasswd(String username){
+
+  Map<String, Map<String, String>> userData;
+  Map<String, String> kim = {"imsuperman" : "passwd1234"};
+  Map<String, String> lee = {"lovelovelove" : "fjnsdfuqb"};
+  Map<String, String> park = {"dkdlelanjffhgo" : "qlalfqjsgh"};
+
+  userData = {"kim" : kim, "lee" : lee, "park" : park};
+  Map<String, String>? result = userData[username];
+  result ??= {'fail' : 'no data'};
+
+  return result;
+}
+```
+
+여기서는 Map 형태가 여러 번 사용되는 경우도 있고.. 코드에서 "자료형" 을 지정하는 텍스트의 비율이 너무 높다.  
+그렇다면 자료형을 짧게 줄여서 사용할 수 있다면 어떨까?  
+
+이럴 때 바로 Typedef 를 사용할 수 있다.  
+위의 기능과 동일한 기능을 하는 코드를 typedef를 이용하여 작성해보았다.  
+
+```dart
+typedef userInfo = Map<String, String>;
+
+userInfo getIdPasswd2(String username){
+
+  Map<String, userInfo> userData;
+  userInfo kim = {"imsuperman" : "passwd1234"};
+  userInfo lee = {"lovelovelove" : "fjnsdfuqb"};
+  userInfo park = {"dkdlelanjffhgo" : "qlalfqjsgh"};
+
+  userData = {"kim" : kim, "lee" : lee, "park" : park};
+  userInfo? result = userData[username];
+  result ??= {'fail' : 'no data'};
+
+  return result;
+}
+```
+
+훨씬 정돈되고 가독성도 높아진 것을 볼 수 있다.  
+실제 글자수를 비교해보면 아래와 같다.  
+
+|typedef 미사용|typedef 사용|
+|---|---|
+|442|418|
+
+34자를 줄였고, 이는 전체 코드 길이의 7.7%에 해당한다.  
+
+코드를 작성하는 사람의 능력이겠지만, 이러한 typedef를 적절하게 이용한다면 가독성 좋고 짧은 코드의 작성이 가능할 것이다.  
+
