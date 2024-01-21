@@ -174,6 +174,9 @@ void main() {
     print(player01.name);
     player01.introduction();
 }
+// ==============================
+// jongya
+// Hi. my name is jongya. level is 10 and my job is magician
 ```
 
 가장 먼저 눈여겨 볼 것은 Player calss 안의 Player 라는 method 입니다. 이것이 바로 Constructor Method로, 인스턴스를 만들 때 인스턴스의 특성을 함께 부여하는 역할을 하죠.  
@@ -182,6 +185,577 @@ void main() {
 
 세 번째로는 late 수식어입니다. 지난 변수 선언 관련 포스트에서 late 수식어는 나중에 살펴보기로 했었는데요, 그게 바로 지금입니다. late는 변수의 초기화를 지연시키는 수식어로, 위 코드에서 late가 없다면 class 안의 Player(...) Constructor Method는 초기화되지 않은 변수를 받게 되고, 이는 오류로 이어지게 됩니다. 즉 컴파일 자체가 불가능해지는 것이죠. 이 late 변수를 사용함으로 인해서 "이 변수(property) 들은 나중에 초기화될 것이니 안심하고 써" 가 되는 것입니다.  
 
+이것을 late 없이, 그리고 좀 더 짧게 만들 수도 있습니다. 일반적으로 dart 에서는 아래와 같이 class 를 만듭니다.  
+
+```dart
+class Player {
+
+  String name;
+  int level;
+  String job;
+
+  Player(this.name, this.level, this.job);
+
+  void introduction() {print('Hi. my name is $name. level is $level and my job is $job');}
+
+}
+
+void main() {
+    Player player01 = Player('jongya', 10, 'magician');
+    print(player01.name);
+    player01.introduction();
+}
+// ==============================
+// jongya
+// Hi. my name is jongya. level is 10 and my job is magician
+```
+
+### Named Constructor Parameters  
+
+function에서 Named Parameter 와 동일하게 class의 Constructor에도 Named Parameter를 적용할 수 있습니다.  
+
+function의 Named Parameter와 동일하게 Constructor Parameter에 default value를 줌으로써 선언할 수도 있고  
+
+```dart
+class Player {
+  String name;
+  int level;
+  String job;
+
+  Player({this.name = 'default name',
+          this.level = 0,
+          this.job = 'non'});
+}
+
+void main() {
+  Player player01 = Player(level: 50);
+  player01.introduction();
+}
+// >> Hi. my name is default name. level is 50 and my job is non
+```
+
+또는 required 수식어를 써줌으로써 선언할 수도 있습니다.  
+
+```dart
+class Player {
+  String name;
+  int level;
+  String job;
+
+  Player({required this.name,
+          required this.level,
+          required this.job});
+}
+
+void main() {
+  Player player01 = Player(name:'jongya', level:10, job:'magician');
+  player01.introduction();
+}
+// >> Hi. my name is jongya. level is 10 and my job is magician
+```
+
+### Named Constructor ★★★  
+
+하나의 클래스를 여러 유형으로 만들고 싶으면 어떻게 해야할까요? 예를 들어, 앞서 본 Player 들이 직업별로 다른 특성을 가지고 있고, 또 일부 특성은 공통적이라면?  
+이럴 때 사용할 수 있는 것이 Named Constructor 입니다.  
+
+Named Constructor 는 동일한 클래스에서 서로 다른 방식으로 인스턴스를 생성할 수 있도록 하는 Constructor 입니다. 각각의 생성자(Constructor)에 이름을 붙여 생성자를 특정하고, 인스턴스를 생성할 때 그 이름을 사용합니다.  
+
+--클래스명.ConstructorName 의 방식으로 선언을 시작합니다.  
+--required 값은 Named Parameter로 받습니다.  
+--인스턴스 생성 룰(초기화 룰)은 Constructor의 괄호() 뒤 콜론 : 을 붙인 뒤 작성합니다.  
+--콜론 뒤의 내용은 변수들의 초기화를 의미합니다. 그리고 이 초기화에서는 this.변수명 을 '값'으로 불러올 수 없습니다.  
+
+다음은 warrior, magician 두 가지 직업 인스턴스를 만들 수 있는 Player 클래스를 Named Constructor로 만든 예시입니다.  
+
+```dart
+class Player {
+  String name, job, skill;
+  int level, str, inteli;
+
+  Player(
+      {this.name = 'default name',
+      this.level = 0,
+      this.job = 'non',
+      this.str = 5,
+      this.inteli = 5,
+      this.skill = 'non'});
+
+  Player.creatWarrior({required String name, required String skill})
+      : this.name = name,     // 생성시 값을 받음
+        this.level = 10,      // 일부 값은 고정도 할 수 있음
+        this.job = 'warrior',
+        this.str = 25,
+        this.inteli = 5,
+        // this.skill = this.skill; >> 이렇게는 사용 불가
+        this.skill = skill;
+
+  Player.createMagician({required String name, required String skill})
+      : this.name = name,
+        this.level = 10,
+        this.job = 'magician',
+        this.str = 5,
+        this.inteli = 25,
+        this.skill = skill;
+
+  void introduction() {
+    print(this.name + "/" + this.job);
+    print("level : " + this.level.toString() + "/ skill : " + this.skill);
+  }
+}
+```
+
+### Named Constructor 예시  
+
+Named Constructor는 정말 중요한 개념이자 기능입니다. 이에 한 가지 예시를 더 들어보도록 하겠습니다.  
+API 통신으로부터 일기예보를 받아오는 예시를 들어보겠습니다.  
+
+```dart
+
+typedef ForecastData = List<Map<String,dynamic>>;
+
+class ForecastDaily {
+  String date, weather;
+  int temp;
+  double hum;
+
+  ForecastDaily.fromJson(Map<String, dynamic> forecastJson)
+      : this.date = forecastJson['date'],
+        this.weather = forecastJson['weather'],
+        this.temp = forecastJson['temp'],
+        this.hum = forecastJson['hum'];
+
+  void announceTodaysWeather(){
+    print('today is $date. weather is $weather and $temp temp, $hum hum.');
+  }
+}
+
+void main() {
+  // ~ get some Json datas ~ //
+  ForecastData forecastData = [
+    {'date':'2024-01-21','weather':'fine', 'temp':25, 'hum':0.5},
+    {'date':'2024-01-22','weather':'cloud','temp':10,'hum':0.75},
+    {'date':'2024-01-23','weather':'rain','temp':15,'hum':0.95},
+    {'date':'2024-01-24','weather':'snow','temp':1,'hum':0.9},
+  ];
+
+  // make ForecastDaily instance and announce
+  forecastData.forEach((forecastJson){
+    var forecast = ForecastDaily.fromJson(forecastJson);
+    forecast.announceTodaysWeather();
+  });
+}
+// ==============================================================
+// >> today is 2024-01-21. weather is fine and 25 temp, 0.5 hum.
+// >> today is 2024-01-22. weather is cloud and 10 temp, 0.75 hum.
+// >> today is 2024-01-23. weather is rain and 15 temp, 0.95 hum.
+// >> today is 2024-01-24. weather is snow and 1 temp, 0.9 hum.
+```
+
+Named Consturctor는 정말 자주, 그리고 중요하게 사용되는 개념이자 기능이므로 꼭 익히고 넘어가도록 합시다.  
+
+## Cascade Notation ★★  
+
+Cascade Notation : 계단식 표기법. 또는 연쇄 호출 표기법.  
+여러 메서드를 동일한 객체에 연속적으로 호출하는 간편한 방법입니다. 표기법은 닷닷(..) 이고, 세미콜론은 이 표기법이 끝나는 부분에서 한 번만 작성해주면 됩니다.  
+
+어떤 클래스 인스턴스를 생성하고, 이 인스턴스의 property 들의 값을 바꾸고 싶다면 어떻게 해야 할까요? 지금까지 배운 것으로는 아래와 같이 작성할 수 있을 것입니다.  
+
+```dart
+class Player{
+  String name, job;
+  int level;
+
+  Player({required this.name, required this.job, required this.level});
+  void introduction(){print('my name is $name, $level level, and $job');}
+}
+
+void main() {
+  Player player01 = Player(name:'jongya', level:10, job:'magician');
+  player01.name = 'changed name';
+  player01.level = 15;
+  player01.job = 'thief';
+  player01.introduction();  
+}
+// >> my name is changed name, 15 level, and thief
+```
+
+하지만 구글에서는 이조차도 길다고 느껴졌는지.. Cascade Notation 이라는 문법을 만들었습니다. 아래와 같이 더 짧게 쓸 수 있죠.  
+
+```dart
+class Player{
+  String name, job;
+  int level;
+
+  Player({required this.name, required this.job, required this.level});
+  void introduction(){print('my name is $name, $level level, and $job');}
+}
+
+void main() {
+  Player player02 = Player(name:'jongya', level:10, job:'magician')
+  ..name = 'changed name'
+  ..level = 15
+  ..job = 'thief';
+  player02.introduction();
+}
+// >> my name is changed name, 15 level, and thief
+```
+
+그리고 아래와 같은 활용법도 있습니다.  
+와우..  
+
+```dart
+class Player{
+  String name, job;
+  int level;
+
+  Player({required this.name, required this.job, required this.level});
+  void introduction(){print('my name is $name, $level level, and $job');}
+}
+
+void main() {
+  Player player = Player(name: 'default', job: 'non', level: 1);
+
+  Player potato = player
+  ..name = 'potato'
+  ..level = 0
+  ..job = 'potato'
+  ..introduction();
+}
+// >> my name is potato, 0 level, and potato
+```
+
+## enum  
+
+enum 은 특정 값들의 집합 즉 '상수의 집합'을 나타내는 유형입니다.  
+enum은 코드에서 사용 가능한 값의 범위를 제한함으로써 프로그래머가 값 입력에 있어 실수하지 않도록 도와줄 수 있습니다.  
+
+typedef와 비슷하게 작성하는데요, `enum 이름 {값1, 값2 ...}` 와 같은 방식으로 작성하게 되며 중괄호 안의 값들은 무조건 따옴표 없이 사용합니다.  
+아래 예시를 보시죠.  
+
+```dart
+// 실수가 발생하는 경우
+class Player {
+  String name;
+  String job;
+  Player({required this.name, required this.job});
+}
+
+void main() {
+  Player player01 = Player(name: 'jongya', job: 'megician');
+}
+```
+
+위 코드에서 이상한 점이 있습니다. 아주 작은 부분이죠.  
+Player 인스턴스를 생성할 때 job 에 할당되는 값에 오타가 있습니다.  
+
+단순히 오타로 치부할 수도 있지만, 실제 프로그래밍에서는 이 오타가 치명적인 오류를 만들어낼 수도 있습니다.  
+그리고 위와 같은 오타는 찾기도 쉽지 않죠.  
+
+enum 은 이러한 오류들을 미연에 방지할 수 있게 해줍니다. Enum에 할당된 값만을 프로그래머가 사용할 수 있도록 제한하는 기능을 통해서요.  
+
+```dart
+enum Job {warrior, magician, thief}
+
+class Player {
+  String name;
+  Job job;
+  Player({required this.name, required this.job});
+}
+
+void main() {
+  Player player01 = Player(name: 'jongya', job: Job.magician);
+}
+```
+
+--enum 은 '특정 상수의 집합' 입니다.  
+--이를 통해 프로그래머가 제한된 값 내에서 선택을 할 수 있게 하며, 실수를 줄일 수 있습니다.  
+--enum 은 `enum 이름 {값1, 값2 ...}` 과 같은 방식으로 선언합니다.  
+--enum 을 사용해 변수를 선언할 때에는 일반 데이터타입을 명시하는 것과 같이 사용합니다. 위 코드의 `Job job` 과 같이요.  
+--enum 을 사용할 때에는 `enum.상수명` 과 같이 사용합니다.  
+
+enum을 사용하게 되면, 이에 맞지 않는 문법을 사용하게 될 떄 아래와 같은 오류를 발생합니다.  
+
+![](09_001.png)  
+
+그리고 enum을 사용해야 하는 부분에서는 enum을 사용할 수 있게, 그리고 사용자가 무엇을 사용할 수 있는지와 함께 추천됩니다.  
+
+![](09_002.png)  
+
+
+## Abstract Classes 추상화 클래스  
+
+추상화 클래스는 다른 클래스들이 작성해야 할 내용의 청사진이라고 보면 이해가 쉽습니다. 프로그래머가 선언할 클래스의 생김새가 이래야 한다~ 를 정해놓는 것이죠. 물론 여러 추상화 클래스를 만들 수도 있습니다.  
+
+추상화 클래스에는 property, method, return... 등 일반 클래스와 동일한 항목들을 선언할 수 있습니다. 하지만 보통 해당 메서드가 어떠한 작동을 하는지, 해당 프로퍼티가 어떤 값을 가지고 있는지 등은 명시하지 않습니다. 그저 추상화 클래스인 A 를 따르는 클래스는 a, b, c 라는 메서드를 가져야 한다.. 정도의 가이드라인만을 명시합니다.  
+
+이 청사진을 사용하는 실제 클래스들은 이들을 상속, 확장 (extends) 하여 사용합니다. (Java 의 상속과 비슷) 실제 클래스들은 상속받는 추상화 클래스의 메서드를 반드시 선언해야 하죠. 필수적으로 선언해줘야 하는 것을 제외하고는 추상화 클래스와 다르게 추가로 선언해줘도 상관이 없습니다.  
+
+```dart
+// 추상화 클래스인 Car 클래스
+abstract class Car{
+  late int fuel;
+  late String type;
+
+  void start();
+  void stop();
+}
+
+// Car 를 상속받은 Damas 클래스
+class Damas extends Car{
+  void start() { print('start this car'); }
+  void stop() { print('stop this car'); }
+  void somethingNew() { print("it's something new!!");}
+}
+
+// Car 를 상속받은 Rambo 클래스
+class Rambo extends Car{
+
+  String engine;
+  String type;
+
+  Rambo({required this.engine, required this.type});
+
+  void start() { print("It's $type. Boorng Boorng~"); }
+  void stop() { print('Kiiiick~'); }
+}
+
+void main() {
+
+  Damas damas1 = Damas();
+  damas1.start();          // >> start this car
+  damas1.stop();           // >> stop this car
+  damas1.somethingNew();   // >> it's something new!!
+
+  Rambo rambo1 = Rambo(engine: 'Turbo', type: 'Huracán');
+  rambo1.start();          // >> It's Huracán. Boorng Boorng~
+  rambo1.stop();           // >> Kiiiick~
+}
+```
+
+--추상화 클래스는 이를 상속하는 다른 클래스들의 '청사진' 이라고 보면 될 것이다.  
+--추상화 클래스는 `abstract class 클래스명 { }` 과 같은 형식으로 선언한다.  
+--추상화 클래스는 이를 상속받는 다른 클래스가 자신의 메서드와 리턴값을 사용하도록 강제한다.  
+--상속받는 클래스는 `class 클래스명 extends 추상화클래스명` 과 같은 형식으로 선언한다.  
+--추상화 클래스에 property 또한 선언될 수 있으나, 상속시 강제되지 않는다.  
+--상속받은 클래스에서는 추상화 메서드 외로 property나 다른 메서드를 선언할 수 있따.  
+
+만약 상속받는 클래스가 추상화 클래스의 메서드를 선언하지 않았을 경우, 아래와 같은 오류를 만나볼 수 있다.  
+
+![](09_003.png)
+
+
+## Inheritance 상속  
+
+상속은 이미 선언된 다른 클래스의 특징을 그대로 가져와 새로운 클래스를 만드는 것을 의미합니다.  
+이 때 이미 선언되어 자신의 것을 내어주는 클래스를 '부모 클래스' 그리고 부모 클래스의 특징을 가져와 새로이 만들어지는 클래스가 '자식 클래스' 가 됩니다.  
+
+기본적인 선언법은 `class 자식클래스명 extends 부모클래스명` 입니다. 아래 예시를 살펴보죠.  
+
+```dart
+enum SuperPower { defenceMaster, infinityMana, pickPocket }
+enum Job { Warrior, Magician, Theif, whiteHand }
+
+class Player {
+  String name; Job job; int level;
+
+  Player({required this.name, required this.job, required this.level});
+
+  void introduction() {
+    print("i'm $name, the $job. and my level is $level");
+  }
+}
+
+class WhiteHand extends Player {
+  WhiteHand({required String name, required Job job, required int level})
+      : super(name: name, job: job, level: level); // super constructor
+}
+
+void main() {
+  WhiteHand player00 = WhiteHand(name: 'player00', job: Job.whiteHand, level: 1);
+  player00.introduction();
+  print(player00.name);
+}
+// >> i'm player00, the Job.whiteHand. and my level is 1
+// >> player00
+```
+
+예시에서 확인할 수 있듯이, 'WhiteHand' 클래스는 'Player' 클래스를 상속받았습니다. 따라서 WhiteHand 클래스에는 별도로 introduction 메서드를 선언하지 않았음에도 불구하고, 이 메서드를 실행할 수 있습니다.  
+
+또한 동일한 이유로 WhiteHand 클래스에 name이라는 필드를 별도로 선언하지 않았음에도 player00.name을 호출할 때 "player00"이라는 이름이 반환되는 것을 확인할 수 있습니다.  
+
+상속을 받는 자식 클래스는 부모 클래스의 property 그리고 method 를 별도의 선언 없이도 상속받게 됩니다.  
+
+### Super Constructor  
+
+이런 상속에서 주의할 점이 있습니다. 바로 상속을 할 때에는 자식 클래스에서 부모 클래스 생성자를 실행하고, 그 안의 변수를 초기화해줘야 한다는 것이죠.  
+
+```dart
+// ... (전략) ...
+class WhiteHand extends Player {
+  WhiteHand({required String name, required Job job, required int level})
+      : super(name: name, job: job, level: level); // super constructor
+}
+// ... (후략) ...
+```
+
+위 예시를 보면 WhiteHand 클래스 안의 Constructor 부분에서 : super(...) 라는 초기화 부분을 볼 수 있을 것입니다.  
+이 부분은 부모 클래스의 Constructor 즉 `Player(name: $name, job: $job, level: $level)` 과 같은 뜻으로 보면 됩니다.  
+즉 부모 클래스를 만들어주는 것이죠. 그리고 여기서 사용되는 `: super(...)` 부분을 바로 Super Constructor 라고 합니다.  
+
+자식 클래스에서 생성자를 만들어주면서, 부모 클래스 부분은 Super Constructor를 통해 손쉽게 초기화해주는 것입니다.
+
+### Override  
+
+Override는 자식 클래스에서 부모 클래스의 메서드와 동일한 이름을 가진 함수를 선언할 때 사용됩니다.  
+"대체" 의 의미로 보면 되는데요, 부모 클래스의 메서드를 이어받아 그 내용을 수정하거나 완전히 새로운 내용으로 대체하는 것을 의미합니다.  
+
+```dart
+enum SuperPower { defenceMaster, infinityMana, pickPocket }
+enum Job { Warrior, Magician, Theif, whiteHand }
+
+// Parent Class : Player
+class Player {
+  String name; Job job; int level;
+
+  Player({required this.name, required this.job, required this.level});
+
+  void introduction() {
+    print("i'm $name, the $job. and my level is $level");
+  }
+}
+
+// Child Class : Magician
+class Magician extends Player {
+
+  Magician({required String name, required int level})
+      : super(name: name, job: Job.Magician, level: level);
+
+  @override // 부모 쿨래스의 메서드와 동일한 이름의 메서드를 사용할 때에는 @override 어노테이션 사용을 권장한다.
+  void introduction() {
+    super.introduction();
+    print("HaHa, i'm the best ${this.job} in this World!");
+    print("my name is ${this.name}, and ${this.level} level");
+  }
+}
+
+// Child Class : Theif
+class Theif extends Player {
+  String somethingNew = 'something new';  // 부모 class에는 없던 property도 추가할 수 있다.
+
+  Theif({required String name, required int level})
+      : super(name: name, job: Job.Theif, level: level);
+
+  // 하지만 동일한 이름의 메서드를 사용할 때 어노테이션을 사용하지 않아도 컴파일시 자동으로 오버라이드로 인식은 된다.
+  void introduction() {
+    print("HeHe... what's wrong with you?");
+    print("i do not tell you any $somethingNew");
+  }
+}
+
+// main
+void main() {
+
+  WhiteHand player00 = WhiteHand(name: 'player00', job: Job.whiteHand, level: 1);
+  player00.introduction();
+
+  Warrior player01 = Warrior(name: "player01", level: 10);
+  player01.introduction();
+
+  Magician player02 = Magician(name: "player02", level: 15);
+  player02.introduction();
+
+  Theif player03 = Theif(name: 'player03', level: 50);
+  player03.introduction();
+}
+```
+
+사용 시에는 메서드 위에 `@override` 어노테이션을 붙이는 것이 권장되지만, 붙이지 않아도 컴파일러가 자동으로 오버라이드된 것으로 처리합니다.  
+하지만 가독성을 높이고 실수를 방지하기 위해 웬만하면 `@override` 어노테이션을 사용하는 것이 좋습니다.  
+
+
+## Mixin Class  
+
+-- mixin class는 생성자(Constructor)가 없는 클래스를 의미합니다.(생성가자 없어야만 합니다.)  
+-- mixin class는 `mixin 클래스명 {}` 혹은 `mixin class 클래스명 {}` 와 같이 선언합니다.  
+-- `mixin` 로 선언하는 경우는 mixin 클래스로만 사용할 경우에 사용하며,  
+-- `mixin class` 로 선언하는 경우는 mixin 클래스와 일반 클래스 둘 모두로 사용하는 경우입니다.  
+-- `mixin class` 는 dart 3.0 이후 버전에서 사용이 가능합니다.  
+-- 이렇게 생성된 mixin 클래스는 다른 클래스에서 mixin 클래스의 프로퍼티나 메서드를 끌어와 사용할 때 사용됩니다.  
+-- mixins 를 사용할 때에는 `with` 를 사용하며, `class 클래스명 with 참조클래스1, 참조클래스2 ..{}` 식으로 사용합니다.  
+-- 이렇게 사용하면 참조하는 클래스의 property 들과 method 들을 긁어올(참조할) 수 있습니다.  
+-- inheritance 와 같이 어떠한 강제성이 있지는 않고, 그저 다른 클래스가 가지고 있는 것들을 강제사항 없이 가져올 뿐입니다.  
+-- 매우 유용하고 Flutter에서 매우 많이 사용됩니다.  
+
+```dart
+mixin class Strong {
+  final double strength = 10000;
+}
+
+mixin Speed {
+  final double speed = 10000;
+  void skillRunQuick() {
+    print('run fast!');
+  }
+}
+
+class Player with Strong, Speed {
+  String name, job;
+  Player({required String name, required String job})
+      : this.name = name,
+        this.job = job;
+}
+
+void main() {
+  Player player01 = Player(name: 'jongya', job: 'magician');
+  player01.skillRunQuick();
+  print(player01.strength);
+  print(player01.name);
+}
+// ===================================
+// >> run fast!
+// >> 10000.0
+// >> jongya
+```
+
+
+하지만 아래와 같이 Mixin 클래스들 끼리는 with를 사용할 수가 없습니다. 누군가는 Constructor를 가져야 한다는 것!.  
+
+```dart
+class Strong {
+  final double strength = 10000;
+}
+
+class Speed {
+  final double speed = 10000;
+  void skillRunQuick(){ print('run fast!'); }
+}
+
+class Player with Strong, Speed{
+  String name = 'jongya';
+  String job = 'magician';
+}
+```
+
+![](09_004.png)
+
+또한 inheritance 와 mixin을 동시에 사용할 수도 있으니 참고!  
+
+```dart
+class ParentClass{
+    // ~ some content of this class ~ //
+}
+
+mixin MixinClass{
+    // ~ some content of this class ~ //
+    // ~ without Constructor ~ //
+}
+
+class ChildClass extends ParentClass with MixinClass{
+    // ~ some content of this class ~ //
+    // this class can use property and methods of ParentClass and MixinClass
+}
+```
 
 
 ## Reference
@@ -197,3 +771,4 @@ https://nomadcoders.co/dart-for-beginners/lectures/4120
 https://nomadcoders.co/dart-for-beginners/lectures/4121  
 https://nomadcoders.co/dart-for-beginners/lectures/4122  
 https://nomadcoders.co/dart-for-beginners/lectures/4123  
+dart - mixin : https://dart-ko.dev/language/mixins  
