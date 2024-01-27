@@ -252,6 +252,34 @@ class App extends StatelessWidget{
 
 이제부터는 iOS 시뮬레이터로 대신하겠다.  
 
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(App());
+}
+
+class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Hello Flutter'),
+        ),
+        body: Center(
+          child: Text("Hello World!"),
+        ),
+      ),
+    );
+    throw UnimplementedError();
+  }
+}
+
+```
+
+
 ![Alt text](image-4.png)
 
 
