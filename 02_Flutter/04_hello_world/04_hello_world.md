@@ -261,3 +261,16 @@ class App extends StatelessWidget{
 |widget|설명|
 |---|---|
 |StatelessWidget||
+
+
+## recap  
+
+클래스 생성시 named parameter 라는 특징이 있었는데  
+이는 이 flutter에서 더욱 빛이 나는 특징이 아닌가 싶다.  
+
+flutter의 위젯들은 다양한 파라미터를 즉 property를 가지고 있는 경우가 많다.  
+그리고 일부는 선언을 해줄 수도, 선언하지 않을 수도 있다.  
+
+이 때 모든 파라미터의 순서를 알아야 하고, 정확한 데이터타입을 입력하기에는 무리가 있다.  
+그렇기 때문에 Named Parameter 방식으로 클래스를 생성하는 것은 매우 이상적인 해결책이다.  
+
