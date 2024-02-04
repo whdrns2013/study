@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_header/widgets/buttons.dart';
 
 void main() {
   runApp(const App());
@@ -72,43 +73,17 @@ class App extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Row(
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(45),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 45,
-                      ),
-                      child: Text(
-                        "Transfer",
-                        style: TextStyle(fontSize: 22),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(45),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 45,
-                      ),
-                      child: Text(
-                        "Request",
-                        style: TextStyle(fontSize: 22),
-                      ),
-                    ),
-                  ),
+                  const Button(
+                      text: "Transfer",
+                      backgroundColor: Color(0xFFF1B33B),
+                      textColor: Colors.black),
+                  const Button(
+                      text: "Request",
+                      backgroundColor: Color(0xFF1F2123),
+                      textColor: Colors.white),
                 ],
               ),
             ],
