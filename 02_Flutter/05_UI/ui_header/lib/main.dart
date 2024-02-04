@@ -10,20 +10,20 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Scaffold(
-        backgroundColor: const Color(0xFF181818),
+        backgroundColor: Color(0xFF181818),
         body: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: 20,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 55,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Column(
@@ -49,20 +49,20 @@ class App extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(
+              SizedBox(
                 height: 80,
               ),
-              const Text(
+              Text(
                 "Total Balance",
                 style: TextStyle(
                   color: Color.fromRGBO(255, 255, 255, 0.85),
                   fontSize: 22,
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 10,
               ),
-              const Text(
+              Text(
                 "\$7 123 456",
                 style: TextStyle(
                   color: Color.fromRGBO(255, 255, 255, 1),
@@ -70,17 +70,17 @@ class App extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 20,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Button(
+                  Button(
                       text: "Transfer",
                       backgroundColor: Color(0xFFF1B33B),
                       textColor: Colors.black),
-                  const Button(
+                  Button(
                       text: "Request",
                       backgroundColor: Color(0xFF1F2123),
                       textColor: Colors.white),
