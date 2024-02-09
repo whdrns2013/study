@@ -59,6 +59,6 @@ void main() {
   print(someMap);
 
   Map<String, String> map1 = {"key1": "value1", "key2": "value2"};
-  map1.remove("key1");
+  map1['key1'] = 'changed value';
   print(map1);
 }
