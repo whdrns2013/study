@@ -188,18 +188,6 @@ class _MyAppState extends State<MyApp> {
   int counter = 0;
   bool showTitle = true;
 
-  // @override
-  // void initState() {
-  //   print("initState");
-  //   super.initState();
-  // }
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   print('dispose');
-  // }
-
   void onClicked() {
     setState(() {
       counter += 1;
