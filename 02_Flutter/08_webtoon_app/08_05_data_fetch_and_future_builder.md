@@ -3,6 +3,8 @@
 
 여기서 getTodaysToons() 메서드와 ApiService 의 property 들을 static으로 바꿔줬다. state가 없기 때문이라고 했는데.. 왜지? 그게 무슨 말이지?  
 
+static 에 대한 설명 : https://jooona.tistory.com/164  
+
 ```dart
 import 'dart:convert';
 

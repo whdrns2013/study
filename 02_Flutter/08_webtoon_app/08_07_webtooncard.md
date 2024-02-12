@@ -136,6 +136,8 @@ ListView makeList(AsyncSnapshot<List<WebtoonModel>> snapshot) {
   }
 ```
 
+header 설정 참고 : https://gist.github.com/preinpost/941efd33dff90d9f8c7a208da40c18a9  
+
 ![alt text](image-14.png)
 
 ### 이미지 크기 조절하기  
