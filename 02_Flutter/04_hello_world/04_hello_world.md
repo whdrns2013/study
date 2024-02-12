@@ -54,13 +54,15 @@ Initializes the binding using [WidgetsFlutterBinding] if necessary.
 
 ### Widget 만들기  
 
-widget은 결국 클래스의 한 종류이다.  
+widget은 Dart의 클래스의 한 종류이다.  
 widget을 만드는 방법은 클래스를 만드는 것과 동일하다. 여기에 flutter SDK에 있는 3개의 core Widget 중 하나를 상속받아 선언하면 된다.  
+
+3가지 core widget은 바로 Stateless Widget, Stateful Widget, InheritedWidget 이다.  
 
 가장 먼저 예시로 Stateless Widget을 상속받은 App 이라는 Widget을 만들어보겠다.  
 Stateless Widget을 만들기 위해서는 build 라는 메서드를 정의해야 한다.  
 
-build 메서드는 Widget의 UI를 만드는 역할로, Flutter는 이 build라는 메서드가 return 하는 값을 화면에 보여주게 된다.  
+★★★★build 메서드는 Widget의 UI를 만드는 역할★★★★로, Flutter는 이 build라는 메서드가 return 하는 값을 화면에 보여주게 된다.  
 build 메서드의 return type 은 widget 이다.  
 
 ```dart
@@ -215,8 +217,11 @@ scaffold는 원래 공사장에서 쓰이는 "비계" 를 의미한다.
 
 즉 애플리케이션을 하나의 건축물이라고 예를 들었을 때, 이 scaffold 를 통해 애플리케이션 UI 의 틀을 쉽게 잡아줄 수 있다.  
 
+★★★★scaffold를 쉽게 정의할 때 "root widget for all of our screens"라고 표현하면 옳은 표현이다.★★★★
+
 이 scaffold 를 이용해 MaterialApp의 home을 구축해보겠다.  
 home: Text 대신, scaffold 를 입히고, 그 안에 Text 를 써보도록 하자.  
+
 
 ```dart
 import 'package:flutter/material.dart';
