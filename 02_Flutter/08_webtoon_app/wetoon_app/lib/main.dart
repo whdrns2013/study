@@ -4,7 +4,6 @@ import 'package:wetoon_app/services/api_service.dart';
 
 void main() {
   runApp(const MainApp());
-  ApiService().getTodaysToons();
 }
 
 class MainApp extends StatelessWidget {
@@ -13,7 +12,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: HomeScreen(),
     );
   }
