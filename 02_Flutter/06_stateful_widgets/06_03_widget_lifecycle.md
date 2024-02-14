@@ -194,7 +194,7 @@ flutter: build
 앞서서 살펴봤던 initState, dispose 이외에도 build, setState 메서드 또한 stateful widget의 Life cycle 이다.  
 
 createState : state 만들기  
-initState : state 초기화  
+initState : state 초기화. build 메서드 이전에 실행된다.  
 build : 데이터를 통해 UI 빌드  
-setState : 데이터가 변경되었을 때 새로고침  
+setState : 데이터가 변경되었을 때 새로고침. build 메서드를 재실행한다. 데이터에 대한 변경을 적용하려면 setState 앞에 해당 부분을 넣거나 혹은 setState 안쪽에 넣어야 한다.  
 dispose : 위젯이 제거될 때  
