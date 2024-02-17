@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SmallString",
+            "request": "launch",
+            "mainClass": "SmallString",
+            "projectName": "study_23b15b89"
+        },
+        {
+            "type": "java",
             "name": "DescNum",
             "request": "launch",
             "mainClass": "DescNum",

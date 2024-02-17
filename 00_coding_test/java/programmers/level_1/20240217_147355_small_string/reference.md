@@ -1,0 +1,9 @@
+https://school.programmers.co.kr/questions/56546  
+https://byul91oh.tistory.com/309#google_vignette  
+https://mainia.tistory.com/2323  
+https://yoon-dailylife.tistory.com/7  
+https://itdeveloper.tistory.com/48#google_vignette  
+https://www.freecodecamp.org/korean/news/java-string-to-int-how-to-convert-a-string-to-an-integer/  
+https://developer-yeony.tistory.com/84  
+https://mainia.tistory.com/2675  
+https://infoinhere.tistory.com/31  
