@@ -6,6 +6,18 @@
     "configurations": [
         {
             "type": "java",
+            "name": "jadenString",
+            "request": "launch",
+            "mainClass": "jadenString"
+        },
+        {
+            "type": "java",
+            "name": "<unnamed_class$JadenString>",
+            "request": "launch",
+            "mainClass": "<unnamed_class$JadenString>"
+        },
+        {
+            "type": "java",
             "name": "SmallString",
             "request": "launch",
             "mainClass": "SmallString",
