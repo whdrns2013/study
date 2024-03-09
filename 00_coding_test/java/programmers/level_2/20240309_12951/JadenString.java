@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class JadenString {
 
@@ -54,6 +55,7 @@ public class JadenString {
         String answer = "";
         String[] sArray = s.split("");
         int nextIsUpperFlag = 1;
+        System.out.println(" Hello World! ".strip());
 
         for (int i = 0; i < sArray.length; i++) {
             if (sArray[i].equals(" ")) {
@@ -69,6 +71,8 @@ public class JadenString {
                 answer += sArray[i].toLowerCase();
             }
         }
+
+        System.out.println(answer);
     }
 
     // 충격적인 다른 풀이 : 삼항 연산자를 적극 이용하자
