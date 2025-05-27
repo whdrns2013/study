@@ -1,2 +1,6 @@
 
-.DS_Store
+**/.DS_Store
+00_coding_test/.DS_Store
+05_knou/.DS_Store
+06_Rust/01_hello_world/target/*
+
