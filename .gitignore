@@ -4,3 +4,4 @@
 05_knou/.DS_Store
 06_Rust/01_hello_world/target/*
 **/target
+**/.env
