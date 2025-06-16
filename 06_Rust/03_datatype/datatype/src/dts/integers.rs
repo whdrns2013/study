@@ -15,7 +15,7 @@ pub fn integers() {
     // - 부호 있음(signed; i), 부호 없음 (unsigned; u) 두 가지로 나뉜다.
     // - 각 타입은 2^n (n: 비트수) 개의 숫자를 표현 가능하며, 
     // - signed 는 -2^(n-1) ~ 2^(n-1) - 1 까지, unsigned 는 0 ~ 2^n - 1 까지 표현이 가능하다.  
-    //
+    
     // 길이	부호 있음 (signed)	부호 없음 (unsigned)
     // 8-bit	i8	u8
     // 16-bit	i16	u16
@@ -80,14 +80,114 @@ pub fn integers() {
     // float overflow
     // overflow 오류가 나지 않고 표시할 수 있는 정밀도까지만 표현함
     // 표시 못하는 부분들은 버림처리 됨 (반올림 아님)
-    let float_overflow_1:f32 = 0.65352154754845354354;
-    print!("{float_overflow_1}");
+    // let float_overflow_1:f32 = 0.65352154754845354354;
+    // print!("{float_overflow_1}");
 
-    // TODO :: https://doc.rust-kr.org/ch03-02-data-types.html#%EC%88%98%EC%B9%98-%EC%97%B0%EC%82%B0
 
-    // ## 오버플로우 계산하기  
-    // - wrapping_add와 같은 wrapping_* 메서드로 감싸기 동작 실행하기
-    // - checked_* 메서드를 사용하여 오버플로우가 발생하면 None 값 반환하기
-    // - overflowing_* 메서드를 사용하여 값과 함께 오버플로우 발생이 있었는지를 알려주는 부울린 값 반환하기
-    // - saturating_* 메서드를 사용하여 값의 최대 혹은 최솟값 사이로 제한하기
+    // ### Operation of Integer Type 정수형 타입 연산
+    // 더하기 연산
+    // let a :i8 = -5;
+    // let b :i8 = 10;
+    // let sum = a + b;
+    // println!("{sum}");
+
+    // 곱하기 연산
+    // let multiply = a * b;
+    // println!("{multiply}");
+
+    // 나누기 연산 ==> 나누기 후 몫만 반환됨
+    // let divide = a / b;
+    // println!("{divide}");
+
+    // let divide_2 = b / a;
+    // println!("{divide_2}");
+
+    // 나머지 연산 (Modulation)
+    // let modulation = a % b;
+    // println!("{modulation}");
+
+    // ### 서로 다른 타입 간 연산
+    // - u8 + u16 처럼 다른 타입간 연산은 불가능
+
+    // let a = 5u8;
+    // let b = 10u16;
+    // let sum = a + b;
+    // println!("{sum}")
+
+    // let a = 5u8;
+    // let b = 10i8;
+    // let sum = a + b;
+    // println!("{sum}")
+
+    // let a = 5u8;
+    // let b = 3.41274f32;
+    // let sum = a + b;
+    // println!("{}", sum)
+
+    // ## 부동소수점 형 연산  
+    // - 기본적으로 정수형 연산과 동일
+    // let float_a : f32 = 3.523;
+    // let float_b : f32 = 1.234575;
+    // let modulation = float_b / float_a;
+    // println!("{modulation}")
+    // >> 0.35043287
+
+    // - 정수형과 마찬가지로 서로 다른 데이터타입간 연산은 불가능
+    // let float_a : f32 = 3.523;
+    // let float_b : f64 = 1.234575;
+    // let modulation = float_b / float_a;
+    // println!("{modulation}")
+    // >> cannot divide `f64` by `f32`
+
+    // ## 오버플로우를 다루기  
+    // ### wrapping_add와 같은 wrapping_* 메서드로 감싸기 동작 실행하기
+    // - 오버플로우가 발생해도 panic 없이 결과값을 래핑하는 메서드
+    // - 예를 들어, 정수의 최대값을 넘으면 다시 최소값부터 시작하게 된다.
+    // - wrapping_add : 오버플로우시 다시 최-소값에서 시작
+    // 
+    // let int_a : u8 = 254;
+    // let int_b : u8 = 4;
+    // let sum = int_a + int_b;
+    // println!("{sum}");
+    // >> attempt to compute `254_u8 + 4_u8`, which would overflow
+
+    // let int_a : u8 = 254;
+    // let int_b : u8 = 4;
+    // let sum = int_a.wrapping_add(int_b);
+    // println!("{sum}");
+    // >> 2
+
+    // let int_a : u8 = 128;
+    // let int_b : u8 = 4;
+    // let mul = int_a.wrapping_mul(int_b);
+    // println!("{}", mul)
+    // >> 0
+
+    // let int_a : u8 = 128;
+    // let int_b : u8 = 4;
+    // let rem = int_a.wrapping_rem(int_b);
+    // println!("{}", rem)
+
+    // ### checked_add : 오버플로우시 None 값을 반환
+    // let int_a : u8 = 254;
+    // let int_b : u8 = 4;
+    // let sum = int_a.checked_add(int_b);
+    // println!("{:?}", sum);
+    // >> None
+
+    // ### saturating_add : 오버플로우시 최대값으로 고정
+    // - saturating : 포화
+    // let int_a : u8 = 254;
+    // let int_b : u8 = 4;
+    // let sum = int_a.saturating_add(int_b);
+    // println!("{}", sum);
+    // >> 255
+
+    // ### overflowing_add : 튜플 (값, 오버플로우 여부)를 반환
+    // let int_a : u8 = 254;
+    // let int_b : u8 = 4;
+    // let sum = int_a.overflowing_add(int_b);
+    // println!("{:?}", sum);
+    // >> (2, true)
+
 }
