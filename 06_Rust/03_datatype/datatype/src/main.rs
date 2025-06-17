@@ -1,5 +1,5 @@
 mod dts;
 
 fn main() {
-    crate::dts::integers::integers();
+    crate::dts::bools::bools();
 }
