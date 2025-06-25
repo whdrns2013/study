@@ -1,5 +1,5 @@
 mod dts;
 
 fn main() {
-    crate::dts::tuple::tuples();
+    crate::dts::array::arrays();
 }
