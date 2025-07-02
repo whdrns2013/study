@@ -22,6 +22,10 @@ pub fn arrays() {
     let arr = [5, 5, 5, 5, 5];
     println!("{:?}", arr);
 
+    // 동일한 데이터타입만 선언할 수 있다.  
+    // let arr = ['가', 3, 3.14];
+    // println!("{:?}", arr);
+
     // 배열 원소에 접근할 때에는 대괄호 안에 인덱스 번호를 입력하는 bracket syntax를 사용한다.
     let arr: [u8; 5] = [1, 2, 3, 4, 5];
     println!("{:?}", arr[0] + arr[4]);
@@ -34,7 +38,7 @@ pub fn arrays() {
     println!("{:?}", &arr[..2]);
 
     // 유효 범위를 벗어난 원소 접근은 런타임 패닉을 발생시킨다.  
-    let arr: [u8; 5] = [1, 2, 3, 4, 5];
-    println!("{:?}", &arr[7]);
+    // let arr: [u8; 5] = [1, 2, 3, 4, 5];
+    // println!("{:?}", &arr[7]);
     // >> index out of bounds: the length is 5 but the index is 7
 }
