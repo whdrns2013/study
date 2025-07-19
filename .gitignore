@@ -5,3 +5,5 @@
 06_Rust/01_hello_world/target/*
 **/target
 **/.env
+**/__pycache__/*
+04_python/04_streaming/streaming/__pycache__/main.cpython-310.pyc
