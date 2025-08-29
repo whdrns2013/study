@@ -1,0 +1,30 @@
+services:
+
+  mlflow_db:
+    image: postgres:16
+    container_name: mlflow_db
+    environment:
+      POSTGRES_USER: ${MLFLOW_DB_USER_NAME}
+      POSTGRES_PASSWORD: ${MLFLOW_DB_USER_PASSWORD}
+      POSTGRES_DB: ${MLFLOW_DB_NAME}
+    ports:
+      - ${MLFLOW_DB_EX_PORT}:${MLFLOW_DB_IN_PORT}
+    volumes:
+      - ${GLOBAL_DATA_MOUNT_POINT}${MLFLOW_DATA_MOUNT_POINT}/db_data:/var/lib/postgresql/data
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.1.1
+    container_name: mlflow
+    restart: unless-stopped
+    depends_on: [mlflow_db]
+    environment:
+      MLFLOW_TRACKING_URI: http://0.0.0.0:${MLFLOW_WEB_UI_PORT}
+    ports:
+      - ${MLFLOW_WEB_UI_PORT}:8080
+    command: >
+      sh -c "pip install --no-cache-dir psycopg2-binary &&\
+             mlflow server -h 0.0.0.0 -p 8080 --backend-store-uri postgresql+psycopg2://mlflow:mlflow@mlflow_db:${MLFLOW_DB_IN_PORT}/mlflow --default-artifact-root /mlartifacts"
+    volumes:
+      - ${GLOBAL_DATA_MOUNT_POINT}${MLFLOW_DATA_MOUNT_POINT}/mlruns:/mlruns
+      - ${GLOBAL_DATA_MOUNT_POINT}${MLFLOW_DATA_MOUNT_POINT}/mlartifacts/:/mlartifacts
+      - ${GLOBAL_DATA_MOUNT_POINT}${SHARED_DIR_MOUNT_POINT}:${SHARED_DIR_MOUNT_POINT}

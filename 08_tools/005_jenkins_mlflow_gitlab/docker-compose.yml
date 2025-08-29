@@ -1,0 +1,31 @@
+services:
+
+    init_dir:
+      extends:
+        file: ${CUR_DIR}/docker-compose.init_dir.yml
+        service: init_dir
+
+    gitlab:
+      extends:
+        file: ${CUR_DIR}/docker-compose.gitlab.yml
+        service: gitlab
+
+    jenkins:
+      extends:
+        file: ${CUR_DIR}/docker-compose.jenkins.yml
+        service: jenkins
+
+    jenkins_agent:
+      extends:
+        file: ${CUR_DIR}/docker-compose.jenkins.yml
+        service: jenkins_agent
+
+    mlflow_db:
+      extends:
+        file: ${CUR_DIR}/docker-compose.mlflow.yml
+        service: mlflow_db
+
+    mlflow:
+      extends:
+        file: ${CUR_DIR}/docker-compose.mlflow.yml
+        service: mlflow
