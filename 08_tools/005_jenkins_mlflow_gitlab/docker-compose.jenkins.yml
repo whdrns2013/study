@@ -5,7 +5,7 @@ services:
     ports:
       - "${JENKINS_WEB_UI_PORT:-8081}:8080"
       - "${JENKINS_AGENT_PORT:-50000}:50000"
-    restart: on-failure
+    restart: unless-stopped
     volumes:
       - ${GLOBAL_DATA_MOUNT_POINT}${JENKINS_DATA_MOUNT_POINT}:/var/jenkins_home
       - ${GLOBAL_DATA_MOUNT_POINT}${SHARED_DIR_MOUNT_POINT}:${SHARED_DIR_MOUNT_POINT}
@@ -14,7 +14,7 @@ services:
   jenkins_agent:
     image: jenkins/inbound-agent:latest
     container_name: docker-agent
-    restart: always
+    restart: unless-stopped
     environment:
       - JENKINS_URL=http://${JENKINS_HOST_IP}:2454
       - JENKINS_SECRET=${JENKINS_SECRET}

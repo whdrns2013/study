@@ -3,6 +3,7 @@ services:
   mlflow_db:
     image: postgres:16
     container_name: mlflow_db
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${MLFLOW_DB_USER_NAME}
       POSTGRES_PASSWORD: ${MLFLOW_DB_USER_PASSWORD}

@@ -2,7 +2,7 @@ services:
   gitlab:
     image: gitlab/gitlab-ce:17.10.0-ce.0
     container_name: gitlab
-    restart: always
+    restart: unless-stopped
     environment:
       GITLAB_OMNIBUS_CONFIG: |    # gitlab의 설정값 (gitlab.rb 설정파일의 내용에 해당)
         external_url 'http://${GITLAB_HOST_IP}:8080'       # gitlab URL
