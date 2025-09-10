@@ -9,7 +9,9 @@ services:
     volumes:
       - ${GLOBAL_DATA_MOUNT_POINT}${JENKINS_DATA_MOUNT_POINT}:/var/jenkins_home
       - ${GLOBAL_DATA_MOUNT_POINT}${SHARED_DIR_MOUNT_POINT}:${SHARED_DIR_MOUNT_POINT}
-
+      - ${HOST_DOCKER_SOCKET_PATH}:/var/run/docker.sock
+    group_add:
+      - "${DOCKER_GROUP_ID}"
 
   jenkins_agent:
     image: jenkins/inbound-agent:latest
