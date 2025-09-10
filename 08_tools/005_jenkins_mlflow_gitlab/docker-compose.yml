@@ -5,10 +5,14 @@ services:
         file: ${CUR_DIR}/docker-compose.init_dir.yml
         service: init_dir
 
+    # gitlab
+
     gitlab:
       extends:
         file: ${CUR_DIR}/docker-compose.gitlab.yml
         service: gitlab
+
+    # jenkins
 
     jenkins:
       extends:
@@ -20,6 +24,8 @@ services:
         file: ${CUR_DIR}/docker-compose.jenkins.yml
         service: jenkins_agent
 
+    # mlflow
+
     mlflow_db:
       extends:
         file: ${CUR_DIR}/docker-compose.mlflow.yml
@@ -29,3 +35,55 @@ services:
       extends:
         file: ${CUR_DIR}/docker-compose.mlflow.yml
         service: mlflow
+
+    # airflow
+
+    airflow-postgres:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-postgres
+    
+    airflow-redis:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-redis
+    
+    airflow-apiserver:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-apiserver
+
+    airflow-scheduler:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-scheduler
+
+    airflow-dag-processor:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-dag-processor
+
+    airflow-worker:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-worker
+
+    airflow-triggerer:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-triggerer
+
+    airflow-init:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-init
+
+    airflow-cli:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-cli
+
+    airflow-flower:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-flower
