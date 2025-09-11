@@ -15,7 +15,7 @@ class KNNIntentClassifier(IntentClassifier):
         self.config.read("core/config.ini")
         self.model = None
     
-    def train(self, question_embeddings:List[List[float]], intent:List[str]):
+    def train(self, question_embeddings:List[List[float]], intent:List[str], model_save_path:str):
         
         # train model
         model = KNeighborsClassifier(n_neighbors=5, weights="distance", metric="euclidean", n_jobs=-1)
@@ -24,7 +24,7 @@ class KNNIntentClassifier(IntentClassifier):
         self.model = model
 
         # save model
-        MODEL_PATH = self.config['trained_model_path']['knn']
+        MODEL_PATH = model_save_path
         joblib.dump(model, MODEL_PATH)
         
         # save embedding

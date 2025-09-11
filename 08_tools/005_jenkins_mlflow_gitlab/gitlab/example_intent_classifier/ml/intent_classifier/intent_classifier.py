@@ -6,7 +6,7 @@ class IntentClassifier(ABC):
         pass
     
     @abstractmethod
-    def train(self):
+    def train(self, model_save_path):
         pass
     
     @abstractmethod

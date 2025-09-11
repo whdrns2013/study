@@ -1,17 +1,23 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = 'intent-classifier:latest'
+        BUILD_ARGS = '-f core/Dockerfile .'
+        CUR_DIR = '/opt/jenkins_mlflow_gitlab/'
+        GLOBAL_DATA_MOUNT_POINT = 'data'
+        SHARED_DIR_MOUNT_POINT = '/shared_dir/'
+    }
+
     stages {
-        // stage('Checkout Source Code') {
-        //     steps {
-        //         echo 'Git 리포지토리에서 소스코드를 가져옵니다...'
-        //     }
-        // }
         stage('Build Docker Image') {
+            when {
+                changelog '.*\\[build\\].*'  // 조건 : 커밋 메시지에 build가 포함될 경우
+            }
             steps {
                 script {
                     echo 'Docker 이미지를 빌드합니다...'
-                    def customImage = docker.build('intent-classifier:latest', '-f core/Dockerfile .')
+                    docker.build(env.IMAGE_NAME, env.BUILD_ARGS)
                 }
             }
         }
@@ -19,7 +25,11 @@ pipeline {
             steps {
                 script {
                     echo '학습 컨테이너를 실행합니다...'
-                    customImage.run()
+                    def mountArg = "-v ${CUR_DIR}${GLOBAL_DATA_MOUNT_POINT}${SHARED_DIR_MOUNT_POINT}:${SHARED_DIR_MOUNT_POINT} --user 0:0"
+                    docker.image(env.IMAGE_NAME).inside(mountArg){
+                        echo "Container is running for training..."
+                        sh 'cd /app && uv run -m main'
+                    }
                 }
             }
         }
