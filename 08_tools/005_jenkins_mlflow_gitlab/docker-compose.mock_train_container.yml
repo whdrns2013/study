@@ -1,0 +1,9 @@
+services:
+  mock_train_container:
+    image: python:3.11-slim
+    container_name: mock_train_container
+    command: "tail -f /dev/null"
+    volumes:
+      - ./data/mock_train_container:/workspace
+      - ${HOST_DOCKER_SOCKET_PATH}:/var/run/docker.sock
+      - ${GLOBAL_DATA_MOUNT_POINT}${MLFLOW_DATA_MOUNT_POINT}/mlartifacts/:/mlartifacts
