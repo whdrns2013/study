@@ -1,25 +1,37 @@
+variables:
+  IMAGE_NAME: "intent-classifier-gitlab"
+  IMAGE_VERSION: ":latest"
+  BUILD_ARGS: "-f core/Dockerfile ."
+  SHARED_DATA_PATH: "$CI_PROJECT_DIR/data"
+  SHARED_DIR_MOUNT_POINT: "/shared_dir"
+
 stages:
   - build
   - train
 
-variables:
-  - IMAGE_TAG: intent-classifier
-  - IMAGE_DEFAULT_VERSION: latest
-  - CUR_DIR: /opt/jenkins_mlflow_gitlab/
-  - GLOBAL_DATA_MOUNT_POINT: data
-  - SHARED_DIR_MOUNT_POINT: /shared_dir/
-
-build-job:
+build_docker_image:
   stage: build
   image: docker:latest
   services:
-    - name: docker:dind
+    - docker:dind
   script:
-    - docker build -f core/Dockerfile -t $IMAGE_TAG:$IMAGE_DEFAULT_VERSION .
+    - echo "Docker 이미지를 빌드합니다..."
+    - docker build -t $IMAGE_NAME$IMAGE_VERSION $BUILD_ARGS
+  rules:
+    - if: '$CI_COMMIT_MESSAGE =~ /\[build\]/'
 
-train-job:
+run_training:
   stage: train
+  image: docker:latest
+  services:
+    - docker:dind
   script:
-    - docker run -d -v ${CUR_DIR}${GLOBAL_DATA_MOUNT_POINT}${SHARED_DIR_MOUNT_POINT}:${SHARED_DIR_MOUNT_POINT} --user 0:0 $IMAGE_TAG:$IMAGE_DEFAULT_VERSION
-
-# 작성중
+    - echo "학습 컨테이너를 실행합니다..."
+    - >
+      docker run --rm
+      -v "$SHARED_DATA_PATH:$SHARED_DIR_MOUNT_POINT"
+      --user 0:0
+      $IMAGE_NAME$IMAGE_VERSION
+      sh -c "cd /app && uv run -m main"
+  needs:
+    - build_docker_image

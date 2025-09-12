@@ -24,7 +24,7 @@ services:
       - ${MLFLOW_WEB_UI_PORT}:8080
     command: >
       sh -c "pip install --no-cache-dir psycopg2-binary &&\
-             mlflow server -h 0.0.0.0 -p 8080 --backend-store-uri postgresql+psycopg2://mlflow:mlflow@mlflow_db:${MLFLOW_DB_IN_PORT}/mlflow --default-artifact-root /mlartifacts"
+             mlflow server -h 0.0.0.0 -p 8080 --backend-store-uri postgresql+psycopg2://mlflow:mlflow@mlflow_db:${MLFLOW_DB_IN_PORT}/mlflow --artifacts-destination file:/mlartifacts"
     volumes:
       - ${GLOBAL_DATA_MOUNT_POINT}${MLFLOW_DATA_MOUNT_POINT}/mlruns:/mlruns
       - ${GLOBAL_DATA_MOUNT_POINT}${MLFLOW_DATA_MOUNT_POINT}/mlartifacts/:/mlartifacts
