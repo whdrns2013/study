@@ -1,5 +1,6 @@
 import mlflow
-from typing import Dict, Any
+from typing import Dict, Any, List
+from mlflow_mng import common_classes
 
 class MlflowRun():
     
@@ -17,14 +18,14 @@ class MlflowRun():
         self.run_id = run_id
         return run_id, run
     
-    def log_params(self, parameters:Dict[str, Any]):
-        for param, value in parameters.items():
-            self.mlflow.log_param(param, value)
+    def log_params(self, parameters:List[common_classes.TrainParam]):
+        for param_set in parameters:
+            self.mlflow.log_param(param_set.param_name, param_set.param_value)
         return self.mlflow
     
-    def log_metrics(self, metrics:Dict[str, Any]):
-        for metric, score in metrics.items():
-            self.mlflow.log_metric(metric, score)
+    def log_metrics(self, metrics:List[common_classes.Metric]):
+        for metric in metrics:
+            self.mlflow.log_metric(metric.metric, metric.score)
         return self.mlflow
     
     def end_run(self):
