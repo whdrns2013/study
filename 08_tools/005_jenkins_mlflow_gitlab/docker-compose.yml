@@ -12,6 +12,11 @@ services:
         file: ${CUR_DIR}/docker-compose.gitlab.yml
         service: gitlab
 
+    gitlab-runner:
+      extends:
+        file: ${CUR_DIR}/docker-compose.gitlab_runner.yml
+        service: gitlab-runner
+
     # jenkins
 
     jenkins:

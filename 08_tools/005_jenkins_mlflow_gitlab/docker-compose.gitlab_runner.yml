@@ -1,0 +1,10 @@
+services:
+  gitlab-runner:
+    image: gitlab/gitlab-runner:latest
+    container_name: gitlab-runner
+    restart: always
+    privileged: true
+    volumes:
+      - ${CUR_DIR}${GITLAB_RUNNER_DATA_MOUNT_POINT}/config:/etc/gitlab-runner
+      - ${HOST_DOCKER_SOCKET_PATH}:/var/run/docker.sock
+    network_mode: "bridge"

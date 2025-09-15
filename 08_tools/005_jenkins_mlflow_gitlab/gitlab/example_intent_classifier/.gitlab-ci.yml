@@ -1,8 +1,8 @@
 variables:
   IMAGE_NAME: "intent-classifier-gitlab"
-  IMAGE_VERSION: ":latest"
+  IMAGE_VERSION: "latest"
   BUILD_ARGS: "-f core/Dockerfile ."
-  SHARED_DATA_PATH: "$CI_PROJECT_DIR/data"
+  SHARED_DATA_PATH: "/opt/jenkins_mlflow_gitlab"
   SHARED_DIR_MOUNT_POINT: "/shared_dir"
 
 stages:
@@ -16,7 +16,7 @@ build_docker_image:
     - docker:dind
   script:
     - echo "Docker 이미지를 빌드합니다..."
-    - docker build -t $IMAGE_NAME$IMAGE_VERSION $BUILD_ARGS
+    - docker build -t $IMAGE_NAME:$IMAGE_VERSION $BUILD_ARGS
   rules:
     - if: '$CI_COMMIT_MESSAGE =~ /\[build\]/'
 
@@ -29,9 +29,9 @@ run_training:
     - echo "학습 컨테이너를 실행합니다..."
     - >
       docker run --rm
-      -v "$SHARED_DATA_PATH:$SHARED_DIR_MOUNT_POINT"
+      -v "$SHARED_DATA_PATH$SHARED_DIR_MOUNT_POINT:$SHARED_DIR_MOUNT_POINT"
       --user 0:0
-      $IMAGE_NAME$IMAGE_VERSION
+      $IMAGE_NAME:$IMAGE_VERSION
       sh -c "cd /app && uv run -m main"
   needs:
     - build_docker_image
