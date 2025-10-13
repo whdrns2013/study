@@ -1,0 +1,59 @@
+services:
+  prometheus:
+    image: prom/prometheus:v3.3.0
+    container_name: monitoring-prometheus
+    ports:
+      - ${PROMETHEUS_PORT}:9090
+    restart: unless-stopped
+    volumes:
+      - ${PROMETHEUS_CONFIG_DIR}/prometheus.yml:/etc/prometheus/prometheus.yml
+  
+  node_exporter:
+    image: prom/node-exporter:v1.9.1
+    container_name: monitoring-node-exporter
+    command:
+      - '--path.rootfs=/host'
+    pid: host
+    restart: unless-stopped
+    ports:
+      - ${NODE_EXPORTER_PORT}:9100
+    volumes:
+      - '/:/host:ro,rslave'
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    container_name: monitoring-cadvisor
+    privileged: true
+    devices:
+      - /dev/kmsg
+    ports:
+      - ${CADVISOR_EXPORTER_PORT}:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    restart: unless-stopped
+
+  statsd_exporter:
+    image: prom/statsd-exporter:v0.28.0
+    container_name: monitoring-statsd-exporter
+    ports:
+      - ${STATSD_EXPORTER_UDP_PORT}:8125/udp
+      - ${STATSD_EXPORTER_PORT}:9102
+    restart: unless-stopped
+    command: "--statsd.listen-udp=:${STATSD_EXPORTER_UDP_PORT}"
+
+  grafana:
+    image: grafana/grafana:11.6.0
+    container_name: monitoring-grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+    ports:
+      - ${GRAFANA_PORT}:3000
+    restart: always
+    user: '0'     # /var/lub/grafana permission 획득
+    volumes:
+      - ${GLOBAL_DATA_MOUNT_POINT}${GRAFANA_DATA_MOUNT_POINT}:/var/lib/grafana
