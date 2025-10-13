@@ -92,3 +92,6 @@ services:
       extends:
         file: ${CUR_DIR}/docker-compose.airflow.yml
         service: airflow-flower
+
+volumes:
+  postgres-db-volume: # 하위 컴포즈 파일에서 사용하는 리소스는, 메인 컴포즈 파일에 반드시 이름이 반드시 명시되어야 한다.
