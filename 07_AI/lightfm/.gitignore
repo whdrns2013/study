@@ -1,0 +1,5 @@
+.venv
+*.csv
+*.xlsx
+!links.csv
+!movie_info.csv
