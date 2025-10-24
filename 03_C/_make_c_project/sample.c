@@ -1,14 +1,14 @@
 #include <stdio.h>
 
-int add(x, y);
+int add(int x, int y);
 
-main() {
+int main() {
     int a = 10;
     int b = 20;
     int result = add(a, b);
     printf("%d + %d = %d", a, b, result);
 }
 
-int add(x, y) {
+int add(int x, int y) {
     return x + y;
 }
