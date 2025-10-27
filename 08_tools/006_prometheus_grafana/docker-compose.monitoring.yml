@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     volumes:
       - ${PROMETHEUS_CONFIG_DIR}/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
   
   node_exporter:
     image: prom/node-exporter:v1.9.1
@@ -57,3 +58,6 @@ services:
     user: '0'     # /var/lub/grafana permission 획득
     volumes:
       - ${GLOBAL_DATA_MOUNT_POINT}${GRAFANA_DATA_MOUNT_POINT}:/var/lib/grafana
+
+volumes:
+  prometheus-data: {}
