@@ -1,0 +1,34 @@
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import BaseModel, Field
+
+# service section env
+class ServiceSettings(BaseModel):
+    timeout: str = "60"             # Pydantic은 소문자를 기대함. 소문자로 만들어야 한다.
+    multiprocessor_num: str = "10"
+
+# path section env
+class PathSettings(BaseModel):
+    data_path: str = "data"
+    artifact_path: str = "artifacts"
+    log_path: str = "logs"
+    
+# logging section env
+class LoggingSettings(BaseModel):
+    expire_day: str = "90"
+    log_level: str = "DEBUG"
+
+# env sction grouping
+class Settings(BaseSettings):
+    # typ hint
+    service_setting: ServiceSettings = Field(default_factory=ServiceSettings)
+    logging_setting: LoggingSettings = Field(default_factory=LoggingSettings)
+    path_setting: PathSettings = Field(default_factory=PathSettings)
+    
+    # .env structure
+    model_config = SettingsConfigDict(
+        env_file='core/.env',
+        env_nested_delimiter='__'
+    )
+
+# 전역 설정 객체
+settings = Settings()
