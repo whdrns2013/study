@@ -32,3 +32,4 @@ settings = Settings() # 이렇게 선언해놓으면 다른 어떤곳에서 impo
 
 # pydantic_settings.exceptions.SettingsError: error parsing value for field "path" from source "EnvSettingsSource"
 # pydantic-settings가 Settings 클래스의 path: PathSettings 필드를 채우려고 할 때, .env 파일의 PATH__... 변수들보다 **운영체제(Windows)의 기본 환경 변수인 PATH**를 먼저 발견했기 때문일 가능성이 높음
+# https://gemini.google.com/app/c6feb8741c961192?hl=ko
