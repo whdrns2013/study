@@ -15,10 +15,9 @@ class AppSettings(BaseSettings):
     logging: LoggingSettings
     
     model_config = SettingsConfigDict(
-        env_file="core/.env",
-        env_file_encoding="utf-8",
-        extra="ignore",
-        env_nested_delimiter="__" # __로 구분
+        env_file="core/06.env",
+        env_file_encoding='utf-8',
+        env_nested_delimiter='__' # __로 구분
     )
 
 settings = AppSettings()
