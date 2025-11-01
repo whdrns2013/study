@@ -1,9 +1,20 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void datatype_enumerate();
+void logging_test();
 
-void main() {
+enum LOG_LEVEL {
+        DEBUG,
+        INFO=10,
+        WARNING=20,
+        ERROR=30
+    };
+
+int main() {
     datatype_enumerate();
+    logging_test();
+    return 0;
 }
 
 void datatype_enumerate() {
@@ -50,4 +61,18 @@ void datatype_enumerate() {
     enum BIG_ENUM {q, r, s=50000000000LL};
     printf("%s의 size : %d\n", "SMALL_ENUM", sizeof(enum SMALL_ENUM));
     printf("%s의 size : %d\n", "BIG_ENUM", sizeof(enum BIG_ENUM)); // 큰 값을 저장해야 하는 경우 사이즈가 바뀐다.
+}
+
+void logging_warn(int log_level_in, char* message){
+        if (log_level_in >= WARNING){
+            printf("[WARNING] %s", message);
+        }
+    }
+
+void logging_test(){
+    // log leve
+    int log_level_custom = INFO;
+    logging_warn(log_level_custom, "INFO 테스트 메시지입니다.");
+    log_level_custom = WARNING;
+    logging_warn(log_level_custom, "WARNING 테스트 메시지입니다.");
 }

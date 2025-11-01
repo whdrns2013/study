@@ -50,5 +50,6 @@ void constant_escape_char() {
 }
 
 void expression_escape_char_word() {
-    printf("escape 문자를 직접 문자로 출력할 때에는 escape 문자를 연속으로 두 번 사용한다. \\");
+    printf("escape 문자를 직접 문자로 출력할 때에는\n");
+	printf("escape 문자를 연속으로 두 번 사용한다. \\");
 }

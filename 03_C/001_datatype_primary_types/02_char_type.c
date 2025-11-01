@@ -22,8 +22,8 @@ void datatype_char(){
     char max_char = CHAR_MAX;
     printf("char 자료형의 범위(s) : %c, %c\n", min_char, max_char);
     printf("char 자료형의 범위(s) : %d, %d\n", min_char, max_char);
-    char min_uchar = 0;
-    char max_uchar = UCHAR_MAX;
+    unsigned char min_uchar = 0;
+    unsigned char max_uchar = UCHAR_MAX;
     printf("char 자료형의 범위(us) : %c, %c\n", min_uchar, max_uchar);
     printf("char 자료형의 범위(us) : %d, %d\n", min_uchar, max_uchar);
 

@@ -35,42 +35,42 @@ void datatype_int(){
     printf("char 자료형의 범위(us) : %c, %c\n", min_uchar, max_uchar);
     printf("char 자료형의 범위(us) : %d, %d\n", min_uchar, max_uchar);
 
-    // short int
+    // short int (signed) 범위
     short int min_short_int = SHRT_MIN; // 자료형은 short int 로 써도 되고
     short max_short_int = SHRT_MAX;     // 그냥 short로 써도 됨
     printf("short int 자료형의 범위(s) : %d, %d\n", min_short_int, max_short_int);
 
-    // short int
-    short min_ushort_int = 0;
-    short max_ushort_int = USHRT_MAX;
+    // short int (unsigned) 범위
+    unsigned short min_ushort_int = 0;
+    unsigned short max_ushort_int = USHRT_MAX;
     printf("short int 자료형의 범위(us) : %d, %d\n", min_ushort_int, max_ushort_int);
 
-    // int
+    // int (signed) 범위
     int min_int = INT_MIN;
     int max_int = INT_MAX;
     printf("int 자료형의 범위(s) : %d, %d\n", min_int, max_int);
 
-    // int
+    // int (unsigned) 범위
     int min_uint = 0;
     int max_uint = UINT_MAX;
     printf("int 자료형의 범위(us) : %u, %u\n", min_uint, max_uint); // unsigned는 %u로 써야 함
     
-    // long int
+    // long int (signed) 범위
     long int min_long_int = LONG_MIN;   // long int 로 써도 되고
     long max_long_int = LONG_MAX;       // long 으로 써도 됨
     printf("long int 자료형의 범위(s) : %ld, %ld\n", min_long_int, max_long_int); // 그냥 %d형이 아니라 %ld 형으로 써야 함
 
-    // long int
+    // long int (unsigned) 범위
     long min_ulong_int = 0;
     long max_ulong_int = ULONG_MAX;
     printf("long int 자료형의 범위(us) : %lu, %lu\n", min_ulong_int, max_ulong_int); // lu는 %lu 로 써야 함
 
-    // long long int
+    // long long int (signed) 범위
     long long int min_long_long_int = LLONG_MIN;    // long long int 로 써도 되고
     long long max_long_long_int = LLONG_MAX;        // long long 으로만 써도 됨
     printf("long long int 자료형의 범위(s) : %lld, %lld\n", min_long_long_int, max_long_long_int); // 그냥 %d형이 아니라 %lld 형으로 써야 함
     
-    // long long int
+    // long long int (unsigned) 범위
     long long min_ulong_long_int = 0;
     long long max_ulong_long_int = ULLONG_MAX;
     printf("long long int 자료형의 범위(us) : %llu, %llu\n", min_ulong_long_int, max_ulong_long_int); // llu는 %llu 로 써야 함
@@ -80,12 +80,16 @@ void datatype_int(){
 void datatype_size_of(){
     char ch;
     printf("char 의 size : %d\n", sizeof(ch));
+    // short int 의 크기(메모리)
     short shrt;
     printf("short int 의 size : %d\n", sizeof(shrt));
+    // int 의 크기(메모리)
     int intig;
     printf("int 의 size : %d\n", sizeof(intig));
+    // long int 의 크기(메모리)
     long lint;
     printf("long int 의 size : %d\n", sizeof(lint));
+    // long long int 의 크기(메모리)
     long long llint;
     printf("long long int 의 size : %d\n", sizeof(llint));
 }

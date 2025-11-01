@@ -22,9 +22,9 @@ void datatype_float() {
     printf("double 자료형의 범위(g : 일반 표기) : %g, %g\n", min_double, max_double);  // 일반 표기법
     long double min_long_double = LDBL_MIN;
     long double max_long_double = LDBL_MAX;
-    printf("long double 자료형의 범위(f : 부동소수 표기) : %lf, %lf\n", min_long_double, max_long_double); // 제대로 표현 불가
-    printf("long double 자료형의 범위(e : 지수 표기) : %le, %le\n", min_long_double, max_long_double);
-    printf("long double 자료형의 범위(g : 일반 표기) : %lg, %lg\n", min_long_double, max_long_double);
+    printf("long double 자료형의 범위(f : 부동소수 표기) : %Lf, %Lf\n", min_long_double, max_long_double); // 제대로 표현 불가
+    printf("long double 자료형의 범위(e : 지수 표기) : %Le, %Le\n", min_long_double, max_long_double);
+    printf("long double 자료형의 범위(g : 일반 표기) : %Lg, %Lg\n", min_long_double, max_long_double);
 
     // unsigned
     printf("\n=========== 실수형의 sign unsign ===========\n");
