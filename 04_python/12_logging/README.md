@@ -199,3 +199,7 @@ def _checkLevel(level):
 ```
 
 ### ?
+
+
+![alt text](flow_of_logging.png)  
+https://docs.python.org/ko/3/howto/logging.html#logging-flow  
