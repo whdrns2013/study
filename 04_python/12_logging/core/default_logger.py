@@ -4,6 +4,7 @@ from typing import Literal
 import time
 import os
 
+DEBUG_MODE = 0
 LOG_LEVEL_TYPE = Literal["DEBUG", "INFO", "WARNING", "ERROR"]
 LOG_WHEN = Literal["S", "M", "H", "D", "midnight", "W{0}", "W{1}", "W{2}", "W{3}", "W{4}", "W{5}", "W{6}"]
 
@@ -89,16 +90,29 @@ class DefaultLogger():
         
         return self.logger
 
-# file handler
-logger_name = "test_logger"
-file_name = "test_log"
-
-config = DefaultLogger(when="S", interval=3)
-logger = config.get_logger(logger_name, file_name)
-# usage(1) : from default_logger import logger
-# usage(2) : config = DefaultLogger(), logger = config.get_logger(logger_name, file_name)
-
 # test code
-for i in range(20):
-    logger.error(f"test log : {i}")
-    time.sleep(1)
+if DEBUG_MODE==0:
+    logger_name = "default_logger"
+    file_name = "default_log"
+    config = DefaultLogger()
+    logger = config.get_logger(logger_name, file_name)
+elif DEBUG_MODE==1:
+    logger_name = "test_logger"
+    file_name = "test_log"
+    config = DefaultLogger(when="S", interval=3)
+    logger = config.get_logger(logger_name, file_name)
+    for i in range(20):
+        logger.error(f"test log : {i}")
+        time.sleep(1)
+
+"""
+usage
+# usage(1) : 기본 로깅 설정으로 간편하게
+from log_manager import logger
+logger.info("abc")
+
+# usage(2) : 로깅 설정 커스텀
+config = DefaultLogger(설정 커스텀...)
+logger = config.get_logger(logger_name, file_name)
+logger.info("abc")
+"""
