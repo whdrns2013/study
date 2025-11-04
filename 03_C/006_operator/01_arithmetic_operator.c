@@ -85,6 +85,7 @@ void float_vs_int() {
     printf("a * b = %f\n", a * 1.5);
 }
 
+// 단항 연산자
 void solo_calc(){
     int x = 5, a, b;
     a = ++x * x--;
