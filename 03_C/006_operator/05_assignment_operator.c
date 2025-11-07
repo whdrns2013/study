@@ -10,13 +10,16 @@ void println_int(const char* str, int a){
     printf(str, a);
 };
 
-void something();
+void assignment_operator();
 
 int main() {
-    something();
+    assignment_operator();
     return EXIT_SUCCESS;
 }
 
-void something(){
-
+// 대입 연산자
+void assignment_operator(){
+    // 대입 연산자 : 좌측 피연산자에 우측 피연산자의 값 혹은 연산의 결과값을 저장함
+    // expr1 = expr2
+    
 }
