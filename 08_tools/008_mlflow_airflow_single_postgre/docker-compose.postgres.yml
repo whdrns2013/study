@@ -1,0 +1,19 @@
+services:
+  postgres_db:
+    image: postgres:16
+    container_name: postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_MASTER_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_MASTER_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DEFAULT_DB_NAME}
+    ports:
+      - ${POSTGRES_DB_EX_PORT}:${POSTGRES_DB_IN_PORT}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    volumes:
+      - ${GLOBAL_DATA_MOUNT_POINT}${POSTGRES_DATA_MOUNT_POINT}/db_data:/var/lib/postgresql/data
+      - ${GLOBAL_CONFIG_MOUNT_POINT}${POSTGRES_DATA_MOUNT_POINT}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d

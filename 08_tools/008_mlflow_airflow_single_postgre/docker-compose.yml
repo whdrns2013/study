@@ -1,0 +1,60 @@
+services:
+
+    # postgres
+    postgres_db:
+      extends:
+        file: ${CUR_DIR}/docker-compose.postgres.yml
+        service: postgres_db
+
+    # mlflow
+
+    mlflow:
+      extends:
+        file: ${CUR_DIR}/docker-compose.mlflow.yml
+        service: mlflow
+
+    # airflow
+    airflow-redis:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-redis
+    
+    airflow-apiserver:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-apiserver
+
+    airflow-scheduler:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-scheduler
+
+    airflow-dag-processor:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-dag-processor
+
+    airflow-worker:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-worker
+
+    airflow-triggerer:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-triggerer
+
+    airflow-init:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-init
+
+    airflow-cli:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-cli
+
+    airflow-flower:
+      extends:
+        file: ${CUR_DIR}/docker-compose.airflow.yml
+        service: airflow-flower

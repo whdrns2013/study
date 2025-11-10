@@ -1,0 +1,11 @@
+services:
+
+  shared_dir:
+    image: alpine:latest
+    container_name: shared_dir
+    volumes:
+      - ${GLOBAL_DATA_MOUNT_POINT}${SHARED_DIR_MOUNT_POINT}:${SHARED_DIR_MOUNT_POINT}
+    command: >
+      sh -c "mkdir -p ${SHARED_DIR_MOUNT_POINT} &&
+             chown -R 1000:1000 ${SHARED_DIR_MOUNT_POINT} &&
+             chmod -R 755 ${SHARED_DIR_MOUNT_POINT}"
