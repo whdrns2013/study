@@ -2,21 +2,21 @@
 #include <stdlib.h>
 #include <limits.h>
 
-char *to_binary_string(int num){
+char *to_binary_string(unsigned int num){
     // 비트 수 계산
-    int bits = sizeof(int) * CHAR_BIT;
+    int bits = sizeof(int) * CHAR_BIT + 1 + 2; // int 32비트 + 시작문자 2개 + 끝문자 1개 = 35개
 
     // 이진수 문자열 : 동적 할당으로 함수 바깥에서도 메모리가 해제되지 않도록 함
-    char *binary_string = (char *)malloc(bits + 1 + 2);
+    char *binary_string = (char *)malloc(bits);
 
     for (int i = 0; i < bits; i++){
         int bit_value = num >> i & 1;                   // num의 오른쪽에서부터 i 번째 이진수
-        binary_string[bits - 1 - i] = bit_value + '0';  // '+0' 을 하면 ASCII 문자 0 또는 1을 반환함
+        binary_string[bits-2-i] = bit_value + '0';  // '+0' 을 하면 ASCII 문자 0 또는 1을 반환함
     }
 
     // 문자열 끝을 뜻하는 널문자 ('\0')를 추가
     binary_string[0] = '0', binary_string[1] = 'B'; // 이진수임을 표현
-    binary_string[bits] = '\0';                     // 문자열의 끝을 지정
+    binary_string[bits-1] = '\0';                     // 문자열의 끝을 지정
 
     return binary_string;
 }
