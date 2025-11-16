@@ -26,13 +26,13 @@ void assignment_operator(){
     // 대입 연산자의 결과값 = 대입되어 저장된 값이 리턴됨
     int b;
     int c = b = a;
-    printf("a : %d\nb : %d\nc : %d\n", a, b, c);
+    printf("a : %d / b : %d / c : %d\n", a, b, c);
 
     // 중간에 다른 자료형이 있는 경우, 원래의 값이 전달됨  
-    float d = 1.5;
+    float d = 1.5f;
     int e;
     float f = e = d;
-    printf("d : %f\ne : %f\nf : %f\n", d, e, f);
+    printf("d : %f / e : %d / f : %f\n", d, e, f);
 }
 
 // 복합 대입 연산자
@@ -42,12 +42,13 @@ void complex_assignment_operator(){
     // expr1 op= expr2;
     // op : + - * / % << >> & ^ |
     // 이는 곳 expr1 = expr1 op expr2; 와 같음
-    int a = 10, b = 3, c = 1;
+    int a = 10, b = 3, c = 1, d=3;
 
     a *= b - 1;
     b /= 2 + 3;
     c += 2;
-    
-    printf("a : %d, b : %d, c : %d\n", a, b, c);
+    d ^= 2;
+
+    printf("a : %d, b : %d, c : %d, d : %d\n", a, b, c, d);
 }
 

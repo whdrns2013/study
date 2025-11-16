@@ -29,10 +29,10 @@ void put_char(){
     char a = 'A';
     putchar(a);
 
-    // char* b = 'The Greatest Showman';
-    // putchar(b);
+    char* b = "The Greatest Showman";
+    putchar(*b);
 
     putchar('K');
 
-    // putchar("Kingsman");
+    putchar(*"Kingsman");
 }

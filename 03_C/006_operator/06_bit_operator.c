@@ -35,28 +35,34 @@ void bit_operator(){
     // 둘 다 1이면 1, 그 외는 모두 0
     int a = 0B11001000;
     int b = 0B00111001;
+    printf("a & b : ");
     print_binary(a&b, 8);
 
     // | : 비트의 OR 연산
     // 둘 중 하나라도 1이면 1, 둘 다 0이면 0
+    printf("a | b : ");
     print_binary(a|b, 8);
 
     // ^ : 비트의 XOR 연산
     // 둘이 다르면 1, 같으면 0
+    printf("a ^ b : ");
     print_binary(a^b, 8);
 
     // ~ : 비트의 NOT 연산
     // 0은 1로, 1은 0으로 반전
+    printf("~a : ");
     print_binary(~a, 8);
 
     // a << n : 비트의 좌측 이동
     // a의 각 비트를 n자리씩 왼쪽으로 이동
     // 빈 공간은 0으로 채워짐
+    printf("a << n : ");
     print_binary(a << 2, 8);
 
     // a >> n : 비트의 우측 이동
     // a의 각 비트를 n자리씩 오른쪽으로 이동
     // 빈 공간은 0으로 채워짐
+    printf("a >> n : ");
     print_binary(a >> 2, 8);
 }
 

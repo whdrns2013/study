@@ -21,10 +21,10 @@ void logical_operation(){
     if ((8 > 3) && (9 > 2) ) println("(2) both are true");
     else println("(2) someone is false");
 
-    // || : 논리합 (AND : 둘 중 하나라도 참이면 참)
-    if ((8 > 3) && (9 > 2) ) println("(1) both are true");
-    if ((8 > 3) && (9 < 2) ) println("(2) someone is true");
-    if ((8 < 3) && (9 < 2) ) println("(3) both are false");
+    // || : 논리합 (OR : 둘 중 하나라도 참이면 참)
+    if ((8 > 3) || (9 > 2) ) println("(1) both are true");
+    if ((8 > 3) || (9 < 2) ) println("(2) someone is true");
+    if ((8 < 3) || (9 < 2) ) println("(3) both are false");
 
     // 논리합과 논리곱은 기호를 두 개씩
     // 비트연산은 기호를 하나씩 사용한다.
@@ -72,14 +72,14 @@ void short_circuit_evaluation(){
     // 또한 ~ 동일
     int e = 1;
     int f = 20;
-    if (e == 1 && f / e > 10){
+    if (e == 1 || f / e > 10){
         println("참입니다.");
     }
 
     // 연산이 되지 않기 때문에 증감연산자 또한 계산되지 않는다.
     int g = 3;
     int h = 2;
-    if (g > h && --g == h){
+    if (g > h || --g == h){
         println("g의 값은 h와 같습니다.");
     }
     printf("g : %d\n", g);

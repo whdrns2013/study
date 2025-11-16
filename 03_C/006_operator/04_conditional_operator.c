@@ -27,7 +27,7 @@ void conditional_operator(){
     int a = 1;
     int b = 2;
     int max = a > b ? a : b;
-    println_int("the max is %d", max);
+    println_int("the max is %d\n", max);
 
     // 수식을 담는 경우
     int c = 1;

@@ -21,7 +21,7 @@ void get_s(){
 void put_s(){
 
     char* str = "The Greatest Showman";
-    puts(str);
+    puts(str); // *str 과 같이 포인터변수를 쓰지는 않는다.
 
     puts("Kings Man");   
 }
