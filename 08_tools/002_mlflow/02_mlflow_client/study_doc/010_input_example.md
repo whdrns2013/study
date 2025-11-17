@@ -1,1 +1,0 @@
-https://mlflow.org/docs/latest/ml/model/signatures/#input-example-formats
