@@ -104,8 +104,7 @@ with mlflow.start_run():
 ```python
 # 일반적인 머신 러닝 모델 : ColSpec 기반 스키마 작성
 from mlflow.models import ModelSignature
-from mlflow.types.schema import Schema, ColSpec
-from mlflow.types.entities import DataType
+from mlflow.types.schema import Schema, ColSpec, DataType
 
 # ... 모델(model) 생성 코드는 생략
 
@@ -135,9 +134,8 @@ with mlflow.start_run():
 ```python
 # Tensor 를 사용하는 딥러닝 모델 : TensorSpec 기반 스키마 작성
 from mlflow.models import ModelSignature
-from mlflow.types.schema import Schema, TensorSpec
+from mlflow.types.schema import Schema, TensorSpec, DataType
 import numpy as np
-from mlflow.types.entities import DataType
 
 # ... 모델(model) 생성 코드는 생략
 
@@ -173,8 +171,7 @@ with mlflow.start_run():
 ```python
 # 파라미터가 필요한 모델의 경우 (LLM 등) - ParamSchema 추가 사용 필요
 from mlflow.models import ModelSignature
-from mlflow.types.schema import Schema, ColSpec, ParamSchema, ParamSpec
-from mlflow.types.entities import DataType
+from mlflow.types.schema import Schema, ColSpec, ParamSchema, ParamSpec, DataType
 
 # ... 모델(model) 생성 코드는 생략
 
