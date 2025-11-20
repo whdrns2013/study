@@ -7,11 +7,12 @@ class DirPathSettings(BaseSettings):
     ARTIFACT_PATH:str = "artifacts/"
 
 class DataSettings(BaseSettings):
-    TRAIN_DATA:str = "train_data.txt"
+    ORIGIN_DATA:str = "train_data.txt"
+    TRAIN_DATA_FILE:str = "train_data.pkl"
     
 class ModelSettings(BaseSettings):
     """TODO: 설정값을 기재하거나 env 파일에 설정해주세요."""
-    ARTIFACTS               :str = "abc"
+    ARTIFACTS               :dict[str,str] = {"model_path" : "artifacts/model.pkl"}
 
 class AppSettings(BaseSettings):
     DIRPATH: DirPathSettings
