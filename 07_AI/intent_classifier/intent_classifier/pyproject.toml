@@ -1,10 +1,11 @@
 [project]
-name = "knn-intent-classifier"
+name = "intent-classifier"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "ipykernel>=7.1.0",
     "konlpy>=0.6.0",
     "pandas>=2.3.3",
     "pydantic>=2.12.4",

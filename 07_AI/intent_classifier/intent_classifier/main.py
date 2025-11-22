@@ -1,5 +1,5 @@
 def main():
-    print("Hello from knn-intent-classifier!")
+    print("Hello from intent-classifier!")
 
 
 if __name__ == "__main__":

@@ -14,10 +14,15 @@ class ModelSettings(BaseSettings):
     """TODO: 설정값을 기재하거나 env 파일에 설정해주세요."""
     ARTIFACTS               :dict[str,str] = {"model_path" : "artifacts/model.pkl"}
 
+class TextPreprocessingSettings(BaseSettings):
+    TOKENIZER_NAME:str      = "okt"
+    TOKENIZING_METHOD:str   = "post"
+
 class AppSettings(BaseSettings):
     DIRPATH: DirPathSettings
     DATA: DataSettings
     MODEL: ModelSettings
+    TEXTPREPROCESSING: TextPreprocessingSettings
     
     model_config = SettingsConfigDict(
         env_file="core/.env", 
