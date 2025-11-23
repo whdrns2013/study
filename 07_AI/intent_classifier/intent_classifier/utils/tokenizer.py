@@ -26,35 +26,38 @@ class TokenizerContext:
 class TokenizerFactory:
     @staticmethod
     def create(tokenizer_name:str) -> Tokenizer:
-        name = name.lower()
-        if name == "okt":
+        tokenizer_name = tokenizer_name.upper()
+        if tokenizer_name == "OKT":
             return OktTokenizer()
-        elif name == "kkma":
+        elif tokenizer_name == "KKMA":
             return KkmaTokenizer()
-        elif name == "komoran":
+        elif tokenizer_name == "KOMORAN":
             return KomoranTokenizer()
-        elif name == "hannanum":
+        elif tokenizer_name == "HANNANUM":
             return HannanumTokenizer()
-        elif name == "whitespace":
+        elif tokenizer_name == "WHITESPACE":
             return WhitespaceTokenizer()
         else:
-            raise ValueError(f"Unknown tokenizer : {name}")
+            raise ValueError(f"Unknown tokenizer : {tokenizer_name}")
 
 class OktTokenizer(Tokenizer):
     
     def __init__(self):
         self.tokenizer = tag.Okt()
         self.tokenizing_method = {
-            TokenizingMethod.NOUNS: self.tokenizer.nouns,
-            TokenizingMethod.POS: self._wrap_pos,
-            TokenizingMethod.MORPHS: self.tokenizer.morphs,
-            TokenizingMethod.PHRASES: self.tokenizer.phrases
+            TokenizingMethod.NOUNS.value: self.tokenizer.nouns,
+            TokenizingMethod.POS.value: self._wrap_pos,
+            TokenizingMethod.MORPHS.value: self.tokenizer.morphs,
+            TokenizingMethod.PHRASES.value: self.tokenizer.phrases
         }
     
     def _wrap_pos(self, text):
         return [word for word, pos in self.tokenizer.pos(text, stem=True) if pos in ["Noun", "Verb", "Adjective"]]
     
     def tokenizing(self, method:TokenizingMethod, input:str | list[str]) -> list[str] | list[list[str]]:
+        print(f"method : {method}")
+        print(self.tokenizing_method)
+        print(self.tokenizing_method[1])
         tokenizer_func = self.tokenizing_method[method]
         if isinstance(input, str):
             result = tokenizer_func(input)
@@ -67,10 +70,10 @@ class KkmaTokenizer(Tokenizer):
     def __init__(self):
         self.tokenizer = tag.Kkma()
         self.tokenizing_method = {
-            TokenizingMethod.NOUNS: self.tokenizer.nouns,
-            TokenizingMethod.POS: self._wrap_pos,
-            TokenizingMethod.MORPHS: self.tokenizer.morphs,
-            TokenizingMethod.PHRASES: self._not_supported
+            TokenizingMethod.NOUNS.value: self.tokenizer.nouns,
+            TokenizingMethod.POS.value: self._wrap_pos,
+            TokenizingMethod.MORPHS.value: self.tokenizer.morphs,
+            TokenizingMethod.PHRASES.value: self._not_supported
         }
     
     def _wrap_pos(self, text):
@@ -93,10 +96,10 @@ class KomoranTokenizer(Tokenizer):
     def __init__(self):
         self.tokenizer = tag.Komoran()
         self.tokenizing_method = {
-            TokenizingMethod.NOUNS: self.tokenizer.nouns,
-            TokenizingMethod.POS: self._wrap_pos,
-            TokenizingMethod.MORPHS: self.tokenizer.morphs,
-            TokenizingMethod.PHRASES: self._not_supported
+            TokenizingMethod.NOUNS.value: self.tokenizer.nouns,
+            TokenizingMethod.POS.value: self._wrap_pos,
+            TokenizingMethod.MORPHS.value: self.tokenizer.morphs,
+            TokenizingMethod.PHRASES.value: self._not_supported
         }
     
     def _wrap_pos(self, text):
@@ -119,10 +122,10 @@ class HannanumTokenizer(Tokenizer):
     def __init__(self):
         self.tokenizer = tag.Hannanum()
         self.tokenizing_method = {
-            TokenizingMethod.NOUNS: self.tokenizer.nouns,
-            TokenizingMethod.POS: self._wrap_pos,
-            TokenizingMethod.MORPHS: self.tokenizer.morphs,
-            TokenizingMethod.PHRASES: self._not_supported
+            TokenizingMethod.NOUNS.value: self.tokenizer.nouns,
+            TokenizingMethod.POS.value: self._wrap_pos,
+            TokenizingMethod.MORPHS.value: self.tokenizer.morphs,
+            TokenizingMethod.PHRASES.value: self._not_supported
         }
     
     def _wrap_pos(self, text):

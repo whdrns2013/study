@@ -15,14 +15,14 @@ class ModelSettings(BaseSettings):
     ARTIFACTS               :dict[str,str] = {"model_path" : "artifacts/model.pkl"}
 
 class TextPreprocessingSettings(BaseSettings):
-    TOKENIZER_NAME:str      = "okt"
-    TOKENIZING_METHOD:str   = "post"
+    TOKENIZER_NAME:str      = "OKT"
+    TOKENIZING_METHOD:str   = "POS"
 
 class AppSettings(BaseSettings):
     DIRPATH: DirPathSettings
     DATA: DataSettings
     MODEL: ModelSettings
-    TEXTPREPROCESSING: TextPreprocessingSettings
+    TEXT_PREPROCESSING: TextPreprocessingSettings
     
     model_config = SettingsConfigDict(
         env_file="core/.env", 

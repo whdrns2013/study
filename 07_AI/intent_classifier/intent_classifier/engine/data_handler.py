@@ -1,6 +1,7 @@
 from schema.dto import OriginData, PreprocessedData, Data
 from core.settings import settings
 from utils.tokenizer import TokenizingMethod, TokenizerFactory, TokenizerContext
+from utils.text_normalizer import Pipe, CaseLowerNormalizer, SpecialCharNormalizer, WhitespaceNormalizer
 import pandas as pd
 import pickle
 
@@ -12,12 +13,18 @@ class TrainDataHandler:
     
     def preprocess(self, origin_data: OriginData = None) -> PreprocessedData:
         data = origin_data.data
+        utterances = data["utterance"].tolist()
+        
+        # text normalize
+        text_normalizer = Pipe()
+        text_normalizer.add_filters([CaseLowerNormalizer(), SpecialCharNormalizer(), WhitespaceNormalizer()])
+        utterances = [text_normalizer.run_pipeline(text) for text in utterances]
         
         # tokenizing
-        tokenizer_name = settings.TEXTPREPROCESSING.TOKENIZER_NAME
+        tokenizer_name = settings.TEXT_PREPROCESSING.TOKENIZER_NAME
         tokenizer = TokenizerFactory.create(tokenizer_name)
-        tokenizer_context = TokenizerContext(tokenizer, TokenizingMethod[settings.TEXTPREPROCESSING.TOKENIZING_METHOD])
-        utterances = tokenizer_context(data["utterance"].tolist())
+        tokenizer_context = TokenizerContext(tokenizer, TokenizingMethod[settings.TEXT_PREPROCESSING.TOKENIZING_METHOD].value)
+        utterances = tokenizer_context.tokenize(utterances)
         
         intents = data["intent"].tolist()
         preprocessedData = PreprocessedData(data = (utterances, intents))
