@@ -3,7 +3,6 @@ from typing import Any
 # pipe-filter pattern
 
 # Iterface
-
 class Filter:
     def __init__(self):
         pass
@@ -24,7 +23,6 @@ class Pipe:
         return temp
 
 # Handlers
-
 class TextNormalizeFilter(Filter):
     def execute(self, input:str) -> str:
         raise NotImplementedError
