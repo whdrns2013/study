@@ -46,11 +46,39 @@ $$
 ### 코드  
 
 ```python
+cases = [
+    {
+    "recommend_result" : [ "A", "B", "C"],
+    "relevance" : {"A":0.1, "B":0.5, "C":0.7}
+    },
+    {
+    "recommend_result" : [ "D", "A", "C", "B", "E" ],
+    "relevance" : [ "C", "A" ]
+    }
+]
 
+
+def calc_dcg(case):
+    case[""]
 ```
 
 
 
 
 ## NDCG  
+
+
+
+
+## IDCG  
+
+
+
+
+## Mean NDCG  
+
+
+
+
+
 

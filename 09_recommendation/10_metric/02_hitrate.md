@@ -20,9 +20,9 @@ $$
 ```python
 # Top-5
 recommend_result = [7, 5, 6, 13, 2]
-relevant_items = [7, 15, 5, 50]
+relevances = [7, 15, 5, 50]
 
-hit_rate = len(set(recommend_result) & set(relevant_items)) / len(recommend_result)
+hit_rate = len(set(recommend_result) & set(relevances)) / len(recommend_result)
 print(hit_rate)
 ```
 
@@ -39,9 +39,9 @@ $$
 ```python
 # Top-5
 recommend_result = [7, 5, 6, 13, 2]
-relevant_items = [7, 15, 5, 50]
+relevances = [7, 15, 5, 50]
 
-hit_rate = len(set(recommend_result) & set(relevant_items)) / len(relevant_items)
+hit_rate = len(set(recommend_result) & set(relevances)) / len(relevances)
 ```
 
 ```bash
@@ -73,32 +73,26 @@ $$
 cases = [
     {
         'recommend_result': [7, 5, 6, 13, 2],
-        'relevant_items': [7, 15, 5, 50]
+        'relevances': [7, 15, 5, 50]
     },
     {
         'recommend_result': [30, 1, 2, 5, 22],
-        'relevant_items': [3, 5]
+        'relevances': [3, 5]
     },
 ]
 
 def calc_hit_rate(case):
-    hit_rate = len(set(case['recommend_result']) & set(case['relevant_items'])) / len(case['recommend_result']) # 2번 방식 hit-rate
-    return hit_rate
+    hitrate = len(set(case['recommend_result']) & set(case['relevances'])) / len(case['recommend_result']) # 2번 방식 hit-rate
+    return hitrate
 
 def calc_mean_hit_rate(cases):
-    hit_rate_sum = 0
-    for i, case in enumerate(cases):
-        hit_rate = calc_hit_rate(case)
-        hit_rate_sum += hit_rate
-        print(f"hitrate {i} :: {hit_rate})")
-    return hit_rate_sum / len(cases)
+    mean_hitrate = sum(calc_hit_rate(case) for case in cases) / len(cases)
+    return mean_hitrate
 
 print(f"mean hitrate :: {calc_mean_hit_rate(cases)}")
 ```
 
 ```bash
-hitrate 0 :: 0.4
-hitrate 1 :: 0.2
 mean hitrate :: 0.3
 ```
 
