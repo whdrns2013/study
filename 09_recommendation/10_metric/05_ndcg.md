@@ -52,13 +52,88 @@ cases = [
     "relevance" : {"A":0.1, "B":0.5, "C":0.7, "D":0.5, "E":0.1}
     },
     {
+    "recommend_result" : [ "A", "B", "C"],
+    "relevance" : {"A":0.9, "B":0.5, "C":0.7, "D":0.5, "E":0.1}
+    },
+    {
     "recommend_result" : [ "D", "A", "C", "B", "E" ],
-    "relevance" : [ "C", "A" ]
+    "relevance" : {"A":0.1, "B":0.5, "C":0.7, "D":0.5, "E":0.1}
     }
 ]
 
+import math
+
 def calc_dcg(case):
-    case[""]
+    dcg = 0
+    for i, item in enumerate(case["recommend_result"]):
+        rel = case["relevance"][item]
+        dcg += rel/(math.log2(i+1+1))
+    return dcg
+```
+
+## IDCG  
+
+### 개념  
+
+- Ideal Discounted Cumulative Gain  
+- 이상적인 DCG 값  
+- 완벽한, 이상적인 추천이 수행되었을 때 얻을 수 있는 DCG 값  
+- DCG 값을 정규화해, 완벽한 추천 대비 어느정도의 성능을 보이는지 평가하기 위한 정규화항  
+
+### 수식  
+
+$$
+IDCG@K = \sum_{i=1}^{k}{\frac{rel_{i}}{log_{2}{(i+1)}}}
+$$
+
+- 기본적으로 수식은 DCG와 동일하다.  
+- 다만, 계산되는 "데이터"가 다르다.  
+
+### 예시  
+
+```python
+관련도 점수 : [3, 2, 2, 1]
+이상적 추천 : [3, 2, 2, 1]
+```
+
+$$
+IDCG@4 = \frac{3}{log_{2}{(2)}} + \frac{2}{log_{2}{(3)}} + \frac{2}{log_{2}{(4)}} + \frac{1}{log_{2}{(5)}} = 5.6925...
+$$
+
+### 특징  
+
+- 항상 DCG는 0보다 크며, IDCG는 DCG보다 크다.  
+- NDCG는 DCG를 IDCG로 나눈(정규화한) 값이다.  
+- 따라서 NDCG는 0~1 사이의 값을 가진다.  
+- 단, 관련되는 아이템이 추천 목록에 하나도 없을 경우 IDCG = 0이다.  
+
+### 코드  
+
+```python
+import math
+cases = [
+    {
+    "recommend_result" : [ "A", "B", "C"],
+    "relevance" : {"A":0.1, "B":0.5, "C":0.7, "D":0.5, "E":0.1}
+    },
+    {
+    "recommend_result" : [ "D", "A", "C", "B", "E" ],
+    "relevance" : {"A":0.1, "B":0.5, "C":0.7, "D":0.5, "E":0.1}
+    }
+]
+
+def calc_dcg(relevance_socres):
+    dcg = 0
+    for i, score in enumerate(relevance_socres):
+        dcg += score/(math.log2(i+1+1))
+    return dcg
+
+def calc_idcg(case):
+    valid_relevance = {k:v for k,v in case["relevance"].items() if k in case["recommend_result"]}
+    sorted_relevance = sorted(valid_relevance.items(), key=lambda x:x[1], reverse=True)
+    relevance_socres = [r[1] for r in sorted_relevance]
+    idcg = calc_dcg(relevance_socres)
+    return idcg
 ```
 
 
@@ -66,10 +141,14 @@ def calc_dcg(case):
 
 ## NDCG  
 
+### 개념  
 
+- DCG의 값을 **이론적으로 가능한 최고 점수(IDCG)로 정규화**한 값  
+- DCG의 값을 0~1 사이로 정규화하여, 추천 결과가 **최선 대비 몇%의 수준인지**를 평가할 수 있다.  
+- 1에 가까울수록 이상적인 랭킹에 가깝다.  
 
+### 
 
-## IDCG  
 
 
 
