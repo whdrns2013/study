@@ -10,7 +10,7 @@
 ### 특징  
 
 - 여러 정답을 고르게 상위에서 맞출수록 점수 증가  
-- MRR과 다르게 전체적인" 순위의 품질을 평가  
+- RR과 다르게 전체적인" 순위의 품질을 평가  
 
 ### 사용하는 경우  
 
@@ -24,12 +24,12 @@
 - 추천리스트에서 정답이 등장할 때의 precision를 합산하여, 개수로 나눠 평균을 냄  
 
 $$
-AP = \frac{1}{|Relevant|}\sum_{k=1}^{N}{P@k \cdot rel(k)}
+AP@K = \frac{1}{|Relevant|}\sum_{k=1}^{N}{Precision@k \cdot rel(k)}
 $$
 
-- $P@k$ : 추천 목록에서 k번째에서의 precision  
+- $Precision@k$ : 추천 목록에서 k번째에서의 precision  
 - $rel(k)$ : k번째 추천 아이템이 정답이면 1, 아니면 0  
-- `|Relevant|` : 전체 정답 개수.  
+- $|Relevant|$ : 전체 정답 개수.  
 - $N$ : 추천 목록의 길이. 
 
 #### 예시  
@@ -63,15 +63,28 @@ $$
 ### 코드  
 
 ```python
-def calc_ap(case):
-    relevant_set = set(case["relevant"])
+case = {
+    "recommend_result" : ["A", "B", "C", "D", "E"],
+    "relevant_items" : ["B", "D"]
+    }
+
+def calc_ap(recommend_result, relevant_items, k:int=None) -> float:
+    if k is None:
+        k = len(recommend_result)
+    recommend_result_k = recommend_result[:k]
+    relevant_set = set(relevant_items)
     sum_precision = 0
     hit = 0
-    for i, item_yn in enumerate(case["recommend_result"]):
+    for i, item_yn in enumerate(recommend_result_k):
         if item_yn in relevant_set:
             hit += 1
             sum_precision += hit/(i + 1)
-    return sum_precision/len(case["relevant"]) 
+    if len(relevant_set) == 0:
+        return 0.0
+    return sum_precision/len(relevant_set)
+
+calc_ap(case["recommend_result"], case["relevant_items"])
+# >> 0.5
 ```
 
 
@@ -85,24 +98,44 @@ def calc_ap(case):
 ### 수식    
 
 $$
-AP = \frac{1}{|Relevant|}\sum_{k=1}^{N}{P@k \cdot rel(k)} \\
-MAP = \frac{1}{n}\sum_{i=1}^{n}{AP(i)}
+AP@K = \frac{1}{|Relevant|}\sum_{k=1}^{N}{Precision@k \cdot rel(k)}\\
+MAP@K = \frac{1}{n}\sum_{i=1}^{n}{AP(i)}
 $$
 
 ### 코드  
 
 ```python
-def calc_ap(case):
-    relevant_set = set(case["relevant"])
+cases = [
+    {
+    "recommend_result" : ["A", "B", "C", "D", "E"],
+    "relevant_items" : ["B", "D"]
+    },
+    {
+    "recommend_result" : ["E", "A", "C", "B", "D"],
+    "relevant_items" : ["B", "D"]
+    }
+]
+
+def calc_ap(recommend_result, relevant_items, k:int=None) -> float:
+    if k is None:
+        k = len(recommend_result)
+    recommend_result_k = recommend_result[:k]
+    relevant_set = set(relevant_items)
     sum_precision = 0
     hit = 0
-    for i, item_yn in enumerate(case["recommend_result"]):
+    for i, item_yn in enumerate(recommend_result_k):
         if item_yn in relevant_set:
             hit += 1
             sum_precision += hit/(i + 1)
-    return sum_precision/len(case["relevant"]) 
+    if len(relevant_set) == 0:
+        return 0.0
+    return sum_precision/len(relevant_set)
 
-def calc_mean_ap(cases):
-    mean_ap = sum(calc_ap(case) for case in cases)/len(cases)
+def calc_mean_ap(cases, k:int=None) -> float:
+    mean_ap = sum(calc_ap(case["recommend_result"], case["relevant_items"], k) for case in cases)/len(cases)
     return mean_ap
+
+calc_mean_ap(cases)
+
+# >> 0.4125
 ```

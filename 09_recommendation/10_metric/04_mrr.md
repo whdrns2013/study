@@ -23,6 +23,8 @@ $$
 RR = \frac{1}{rank}
 $$
 
+- $rank$ : 가장 먼저 등장한 relevant item의 순위  
+
 ### 코드  
 
 ```python
@@ -31,13 +33,16 @@ case = {
     "relevant_items" : [6, 15, 5, 50]
     }
 
-def calc_rr(case):
-    for i, item in enumerate(case["recommend_result"]):
-        if item in case["relevant_items"]:
+def calc_rr(recommend_result, relevant_items, k:int=None) -> float:
+    if k is None:
+        k = len(recommend_result)
+    recommend_result_k = recommend_result[:k]
+    for i, item in enumerate(recommend_result_k):
+        if item in relevant_items:
             return 1 / (i + 1)
-    return 0
+    return 0.0
 
-print(calc_rr(case))
+print(calc_rr(case["recommend_result"], case["relevant_items"]))
 ```
 
 ```bash
@@ -55,7 +60,7 @@ print(calc_rr(case))
 ### 수식    
 
 $$
-MRR = \frac{1}{n}\sum_{i=1}^{n}{\frac{1}{rank}}
+MRR = \frac{1}{n}\sum_{i=1}^{n}{\frac{1}{rank_{i}}}
 $$
 
 - $n$ : number of cases  
@@ -74,14 +79,17 @@ cases = [
     },
 ]
 
-def calc_rr(case):
-    for i, item in enumerate(case["recommend_result"]):
-        if item in case["relevant_items"]:
+def calc_rr(recommend_result, relevant_items, k:int=None) -> float:
+    if k is None:
+        k = len(recommend_result)
+    recommend_result_k = recommend_result[:k]
+    for i, item in enumerate(recommend_result_k):
+        if item in relevant_items:
             return 1 / (i + 1)
-    return 0
+    return 0.0
 
-def calc_mean_rr(cases) :
-    mrr = sum(calc_rr(case) for case in cases) / len(cases)
+def calc_mean_rr(cases, k:int=None) -> float:
+    mrr = sum(calc_rr(case["recommend_result"], case["relevant_items"], k) for case in cases) / len(cases)
     return mrr
 
 print(calc_mean_rr(cases))

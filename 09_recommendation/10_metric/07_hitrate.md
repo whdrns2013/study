@@ -1,3 +1,14 @@
+
+
+
+
+
+
+
+
+
+
+
 ## HIT-RATE  
 
 ### 개념  
@@ -20,9 +31,9 @@ $$
 ```python
 # Top-5
 recommend_result = [7, 5, 6, 13, 2]
-relevances = [7, 15, 5, 50]
+relevant_items = [7, 15, 5, 50]
 
-hit_rate = len(set(recommend_result) & set(relevances)) / len(recommend_result)
+hit_rate = len(set(recommend_result) & set(relevant_items)) / len(recommend_result)
 print(hit_rate)
 ```
 
@@ -39,9 +50,9 @@ $$
 ```python
 # Top-5
 recommend_result = [7, 5, 6, 13, 2]
-relevances = [7, 15, 5, 50]
+relevant_items = [7, 15, 5, 50]
 
-hit_rate = len(set(recommend_result) & set(relevances)) / len(relevances)
+hit_rate = len(set(recommend_result) & set(relevant_items)) / len(relevant_items)
 ```
 
 ```bash
@@ -73,23 +84,35 @@ $$
 cases = [
     {
         'recommend_result': [7, 5, 6, 13, 2],
-        'relevances': [7, 15, 5, 50]
+        'relevant_items': [7, 15, 5, 50]
     },
     {
         'recommend_result': [30, 1, 2, 5, 22],
-        'relevances': [3, 5]
+        'relevant_items': [3, 5]
     },
 ]
 
-def calc_hit_rate(case):
-    hitrate = len(set(case['recommend_result']) & set(case['relevances'])) / len(case['recommend_result']) # 2번 방식 hit-rate
+def calc_hitrate_1(case, k:int=None) -> float:
+    if k is None:
+        k = len(case["recommend_result"])
+    recommend_result = case["recommend_result"][:k]
+    relevant_items = case["relevant_items"]
+    hitrate = len(set(recommend_result) & set(relevant_items)) / len(relevant_items) # 1번 방식 hit-rate
     return hitrate
 
-def calc_mean_hit_rate(cases):
-    mean_hitrate = sum(calc_hit_rate(case) for case in cases) / len(cases)
+def calc_hitrate_2(case, k:int=None) -> float:
+    if k is None:
+        k = len(case["recommend_result"])
+    recommend_result = case["recommend_result"][:k]
+    relevant_items = case["relevant_items"]
+    hitrate = len(set(recommend_result) & set(relevant_items)) / len(recommend_result) # 2번 방식 hit-rate
+    return hitrate
+
+def calc_mean_hitrate(cases, k:int=None) -> float:
+    mean_hitrate = sum(calc_hit_rate2(case, k) for case in cases) / len(cases)
     return mean_hitrate
 
-print(f"mean hitrate :: {calc_mean_hit_rate(cases)}")
+print(f"mean hitrate :: {calc_mean_hitrate(cases)}")
 ```
 
 ```bash
