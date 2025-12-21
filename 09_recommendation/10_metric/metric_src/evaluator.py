@@ -100,17 +100,16 @@ class NDCGEvaluator(Evaluator):
         return dcg
     
     def calc_ndcg(self, predict_items, ground_truth, k) -> float:
-        ideal_relevance_scores = [x[1] for x in sorted(ground_truth.items(), key=lambda x:x[1], reverse=True)[:k]]
-        predict_relevance_scores = [ground_truth.get(item, 0.0) for item in predict_items]
-        dcg = self.calc_dcg(predict_relevance_scores)
-        if len(ideal_relevance_scores) == 0:
-            idcg = 0.0
-        else:
-            idcg = self.calc_dcg(ideal_relevance_scores)
+        if len(ground_truth) == 0:
+            return 0.0
+        if (k is None) or (k > len(predict_items)):
+            k = len(predict_items)
+        ideal_relevance_scores = sorted(ground_truth.values(), reverse=True)[:k]
+        idcg = self.calc_dcg(ideal_relevance_scores)
         if idcg == 0.0:
             return 0.0
-        else:
-            return dcg/idcg
+        dcg = self.calc_dcg([ground_truth.get(item, 0.0) for item in predict_items][:k])
+        return dcg/idcg
 
 class EvaluatorFactory:
     _map = {
