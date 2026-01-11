@@ -13,6 +13,7 @@ RUN sh /uv-installer.sh && rm /uv-installer.sh
 
 # uv 경로 설정
 ENV PATH="/root/.cargo/bin/:$PATH"
+ENV PATH="/root/.local/bin:$PATH"
 
 # 4. 작업 디렉토리 설정
 WORKDIR /workspace

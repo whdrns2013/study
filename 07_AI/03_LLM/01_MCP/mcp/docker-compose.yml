@@ -8,3 +8,6 @@ services:
     extends:
       file: docker-compose.mcp_server.yml
       service: mcp_server
+
+volumes:
+  postgres_data:
