@@ -1,0 +1,29 @@
+# 1. 파이썬 베이스 이미지 사용
+FROM python:3.12-slim
+
+# 2. 필수 시스템 패키지 설치
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# 3. uv 설치
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+
+# uv 경로 설정
+ENV PATH="/root/.cargo/bin/:$PATH"
+
+# 4. 작업 디렉토리 설정
+WORKDIR /workspace
+
+# 5. 의존성 설치
+COPY src/mcp_server/pyproject.toml src/mcp_server/uv.lock ./
+RUN uv sync --frozen
+COPY ./src/mcp_server .
+
+# 6. MCP 서버 포트 개방
+EXPOSE 8000
+
+# 7. 서버 실행
+CMD ["uv", "run", "mcpo", "--port", "8000", "--", "python", "main.py"]

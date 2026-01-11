@@ -1,0 +1,10 @@
+services:
+  db:
+    extends:
+      file: docker-compose.postgresql.yml
+      service: db
+
+  mcp_server:
+    extends:
+      file: docker-compose.mcp_server.yml
+      service: mcp_server
