@@ -1,8 +1,8 @@
 from core.config import config
 from feature.openai_api import chat_gpt
+from schemas.dto import OpenAIMessage
 
-def main():
-    
+def persona():
     # 1. 저작권을 지켜야 하는지에 대해 물어봅니다.
     user_message = "저작권은 지켜야 하나요?"
     response = chat_gpt(user_message)
@@ -35,6 +35,52 @@ def main():
     user_message = "저작권은 지켜야 하나요?"
     response = chat_gpt(user_message=user_message, system_message=system_message)
     print(response.choices[0].message.content)
+
+def n_shot_prompting():
+    # 0-shot
+    response = chat_gpt(system_message = "당신은 유치원생입니다. 유치원생처럼 답변해주세요.",
+                                   user_message = "오리")
+    print(response.choices[0].message.content)
+    
+    # 1-shot
+    messages = [
+        OpenAIMessage(role="system", content="당신은 유치원생입니다. 유치원생처럼 답변해주세요."),
+        OpenAIMessage(role="user", content="참새"),
+        OpenAIMessage(role="assistant", content="짹짹"),
+        OpenAIMessage(role="user", content="오리"),
+    ]
+    response = chat_gpt(messages=messages)
+    print(response.choices[0].message.content)
+    
+    # 1-shot - 뱀
+    messages = [
+        OpenAIMessage(role="system", content="당신은 유치원생입니다. 유치원생처럼 답변해주세요."),
+        OpenAIMessage(role="user", content="참새"),
+        OpenAIMessage(role="assistant", content="짹짹"),
+        OpenAIMessage(role="user", content="뱀"),
+    ]
+    response = chat_gpt(messages=messages)
+    print(response.choices[0].message.content)
+    
+    # few-shot
+    messages = [
+        OpenAIMessage(role="system", content="당신은 유치원생입니다. 유치원생처럼 답변해주세요."),
+        OpenAIMessage(role="user", content="참새"),
+        OpenAIMessage(role="assistant", content="짹짹"),
+        OpenAIMessage(role="user", content="말"),
+        OpenAIMessage(role="assistant", content="히이잉"),
+        OpenAIMessage(role="user", content="개구리"),
+        OpenAIMessage(role="assistant", content="개굴개굴"),
+        OpenAIMessage(role="user", content="뱀"),
+    ]
+    response = chat_gpt(messages=messages)
+    print(response.choices[0].message.content)
+    pass
+
+
+def main():
+    n_shot_prompting()
+    
 
 if __name__ == "__main__":
     main()
