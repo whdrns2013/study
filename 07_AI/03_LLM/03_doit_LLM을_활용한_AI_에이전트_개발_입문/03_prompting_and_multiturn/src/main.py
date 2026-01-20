@@ -2,6 +2,29 @@ from core.config import config
 from feature.openai_api import chat_gpt
 from schemas.dto import OpenAIMessage
 
+def single_turn():
+    while True:
+        user_input = input("사용자 입력 : ")
+        messages = [OpenAIMessage(role="user", content=user_input)]
+        if user_input == "exit":
+            break
+        response = chat_gpt(messages=messages)
+        print("GPT 답변 : " + response.choices[0].message.content)
+
+def multi_turn():
+    messages = []
+    while True:
+        # 사용자의 발화 입력
+        user_input = input("사용자 입력 : ")
+        if user_input == "exit":
+            break
+        messages.append(OpenAIMessage(role="user", content=user_input))
+        # LLM의 답변
+        response = chat_gpt(messages=messages).choices[0].message.content
+        # LLM의 답변을 messages 에 누적하여 담는다. -> 과거 대화이력 누적
+        messages.append(OpenAIMessage(role="assistant", content=response))
+        print("GPT 답변 : " + response)
+        
 def persona_1():
     with open("data/sample_text.txt", "r") as f:
         text = f.read()
@@ -96,9 +119,57 @@ def n_shot_prompting():
     print(response.choices[0].message.content)
     pass
 
+def streamlit_chat():
+    import streamlit as st
+    import random
+    import time
+
+    st.title("Chat Bot")
+    # st.write("Streamlit loves LLMs! 🤖 [Build your own chat app](https://docs.streamlit.io/develop/tutorials/llms/build-conversational-apps) in minutes, then make it powerful by adding images, dataframes, or even input widgets to the chat.")
+    # st.caption("Note that this demo app isn't actually connected to any LLMs. Those are expensive ;)")
+
+    # Initialize chat history
+    if "messages" not in st.session_state:
+        st.session_state.messages = [{"role": "assistant", "content": "Let's start chatting! 👇"}]
+
+    # Display chat messages from history on app rerun
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    # Accept user input
+    if prompt := st.chat_input("What is up?"):
+        # Add user message to chat history
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        # Display user message in chat message container
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
+        # Display assistant response in chat message container
+        with st.chat_message("assistant"):
+            message_placeholder = st.empty()
+            full_response = ""
+            assistant_response = random.choice(
+                [
+                    "Hello there! How can I assist you today?",
+                    "Hi, human! Is there anything I can help you with?",
+                    "Do you need help?",
+                ]
+            )
+            # Simulate stream of response with milliseconds delay
+            for chunk in assistant_response.split():
+                full_response += chunk + " "
+                time.sleep(0.05)
+                # Add a blinking cursor to simulate typing
+                message_placeholder.markdown(full_response + "▌")
+            message_placeholder.markdown(full_response)
+        # Add assistant response to chat history
+        st.session_state.messages.append({"role": "assistant", "content": full_response})
+
+
 
 def main():
-    persona_1()
+    streamlit_chat()
     
 
 if __name__ == "__main__":
