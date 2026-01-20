@@ -2,7 +2,26 @@ from core.config import config
 from feature.openai_api import chat_gpt
 from schemas.dto import OpenAIMessage
 
-def persona():
+def persona_1():
+    with open("data/sample_text.txt", "r") as f:
+        text = f.read()
+        
+    # 1. 출력 형식을 지정하지 않음
+    # user_message = "아래 글을 요약해주세요.\n\n[아래]\n" + text
+    # response = chat_gpt(user_message)
+    # print(response.choices[0].message.content)
+    
+    # 2. 출력 형식을 지정함
+    user_message = """
+    아래 글을 요약해주세요.
+    요약할 때에는 1.핵심메세지(20자 내외), 2.글에서 등장한 키워드(5개) 를 나열하면 됩니다.
+    \n\n[아래]\n""" + text
+    response = chat_gpt(user_message)
+    print(response.choices[0].message.content)
+    
+    
+
+def persona_2():
     # 1. 저작권을 지켜야 하는지에 대해 물어봅니다.
     user_message = "저작권은 지켜야 하나요?"
     response = chat_gpt(user_message)
@@ -79,7 +98,7 @@ def n_shot_prompting():
 
 
 def main():
-    n_shot_prompting()
+    persona_1()
     
 
 if __name__ == "__main__":
