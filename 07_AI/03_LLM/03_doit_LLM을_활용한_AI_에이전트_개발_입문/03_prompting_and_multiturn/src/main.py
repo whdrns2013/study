@@ -1,6 +1,7 @@
 from core.config import config
 from feature.openai_api import chat_gpt
 from schemas.dto import OpenAIMessage
+from feature.streamlit_chat import streamlit_chat
 
 def single_turn():
     while True:
@@ -119,57 +120,15 @@ def n_shot_prompting():
     print(response.choices[0].message.content)
     pass
 
-def streamlit_chat():
-    import streamlit as st
-    import random
-    import time
 
-    st.title("Chat Bot")
-    # st.write("Streamlit loves LLMs! 🤖 [Build your own chat app](https://docs.streamlit.io/develop/tutorials/llms/build-conversational-apps) in minutes, then make it powerful by adding images, dataframes, or even input widgets to the chat.")
-    # st.caption("Note that this demo app isn't actually connected to any LLMs. Those are expensive ;)")
-
-    # Initialize chat history
-    if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "Let's start chatting! 👇"}]
-
-    # Display chat messages from history on app rerun
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-    # Accept user input
-    if prompt := st.chat_input("What is up?"):
-        # Add user message to chat history
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        # Display user message in chat message container
-        with st.chat_message("user"):
-            st.markdown(prompt)
-
-        # Display assistant response in chat message container
-        with st.chat_message("assistant"):
-            message_placeholder = st.empty()
-            full_response = ""
-            assistant_response = random.choice(
-                [
-                    "Hello there! How can I assist you today?",
-                    "Hi, human! Is there anything I can help you with?",
-                    "Do you need help?",
-                ]
-            )
-            # Simulate stream of response with milliseconds delay
-            for chunk in assistant_response.split():
-                full_response += chunk + " "
-                time.sleep(0.05)
-                # Add a blinking cursor to simulate typing
-                message_placeholder.markdown(full_response + "▌")
-            message_placeholder.markdown(full_response)
-        # Add assistant response to chat history
-        st.session_state.messages.append({"role": "assistant", "content": full_response})
-
+def streamlit_chat_wrap():
+    # uv run streamlit run main.py
+    chat_function = chat_gpt
+    streamlit_chat(chat_function)
 
 
 def main():
-    streamlit_chat()
+    streamlit_chat_wrap()
     
 
 if __name__ == "__main__":

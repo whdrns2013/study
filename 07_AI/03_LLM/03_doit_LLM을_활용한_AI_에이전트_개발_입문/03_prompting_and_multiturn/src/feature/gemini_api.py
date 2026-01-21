@@ -17,3 +17,5 @@ def gemini(prompt:str):
 
 # 결과에서 텍스트 출력
 # response.text
+
+# TODO: 스트리밍 적용
