@@ -1,0 +1,12 @@
+LICENSE.txt
+README.md
+pyproject.toml
+src/calc/__about__.py
+src/calc/__init__.py
+src/calc/models.py
+src/calc/operations.py
+src/my_package.egg-info/PKG-INFO
+src/my_package.egg-info/SOURCES.txt
+src/my_package.egg-info/dependency_links.txt
+src/my_package.egg-info/requires.txt
+src/my_package.egg-info/top_level.txt

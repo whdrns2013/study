@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my-package"
+version = "0.3.0"
+description = "example package"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+keywords = ["dummy", "my-package", "my", "package"]
+authors = [{ name = "tester", email = "tester@tester.com" }]
+dependencies = [
+	"pydantic>=2.0,<3.4"
+]
+
+[project.urls]
+Documentation = "http://dummy-site/tester/my-package#readme"
+Issues = "http://dummy-site/tester/my-package/issues"
+Source = "http://dummy-site/tester/my-package"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

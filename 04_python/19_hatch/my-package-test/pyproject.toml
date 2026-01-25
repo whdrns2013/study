@@ -1,0 +1,12 @@
+[project]
+name = "my-package-test"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "my-package",
+]
+
+[tool.uv.sources]
+my-package = { path = "lib/my_package-0.1.0-py3-none-any.whl" }
