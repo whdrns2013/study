@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 
-def get_config(config_path:str="core/secret.ini"):
+def get_config(config_path:str="config/secret.ini"):
     config = ConfigParser()
     config.read(config_path)
     return config

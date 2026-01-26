@@ -1,5 +1,7 @@
+from service.what_time_is_it_terminal import terminal_conversation
+
 def main():
-    print("Hello from sec01!")
+    terminal_conversation()
 
 
 if __name__ == "__main__":
