@@ -6,7 +6,6 @@ def get_current_time(timezone="Asia/Seoul"):
     tz = pytz.timezone(timezone)
     now = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
     now_timezone = f"{now} {timezone}"
-    print(now_timezone)
     return now_timezone
 
 tools = [
@@ -28,3 +27,18 @@ tools = [
         }
     },
 ]
+
+def tool_mapping(messages:list[dict],
+                 tool_name:str,
+                 tool_call_id:str|int,
+                 arguments:dict|None):
+    if tool_name == "get_current_time":
+        messages.append(
+            {
+                "role" : "function",
+                "tool_call_id" : tool_call_id,
+                "name" : tool_name,
+                "content" : get_current_time(timezone=arguments["timezone"]), 
+            }
+        )
+    return messages

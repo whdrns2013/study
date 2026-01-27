@@ -20,6 +20,7 @@ messages = [
     {"role" : "system", "content" : "너는 사용자를 도와주는 상담사야."},
 ]
 
+
 # 터미널 대화 섹션
 def terminal_conversation():
     while True:

@@ -1,5 +1,5 @@
 from google import genai
-from core.config import config
+from config.config import config
 
 def gemini(prompt:str):
     # 1. 클라이언트 초기화 (발급받은 API 키 입력)

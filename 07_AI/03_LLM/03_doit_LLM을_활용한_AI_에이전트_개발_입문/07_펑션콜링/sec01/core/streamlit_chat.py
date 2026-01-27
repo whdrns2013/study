@@ -1,5 +1,5 @@
 import streamlit as st
-from feature.openai_api import chat_gpt
+from core.openai_api import chat_gpt
 
 def streamlit_chat(chat_function=chat_gpt):
     
@@ -17,8 +17,9 @@ def streamlit_chat(chat_function=chat_gpt):
     
     # 대화 기록을 웹브라우저에 출력
     for message in st.session_state.messages:
-        with st.chat_message(message["role"]): # st.chat_message : 스트림릿의 채팅 인터페이스에 메시지를 출력하는 용도 (assistant / user)
-            st.markdown(message["content"])    # st.markdown : 컨텐츠를 출력할 형태 지정 - 마크다운으로 (기본은 write)
+        if (message["role"] == "user") or (message["role"] == "assistant"):
+            with st.chat_message(message["role"]): # st.chat_message : 스트림릿의 채팅 인터페이스에 메시지를 출력하는 용도 (assistant / user)
+                st.markdown(message["content"])    # st.markdown : 컨텐츠를 출력할 형태 지정 - 마크다운으로 (기본은 write)
     
     # LLM 에 질의
     if prompt := st.chat_input(): # 사용자의 입력을 받아 prompt 변수에 할당
@@ -36,4 +37,5 @@ def streamlit_chat(chat_function=chat_gpt):
     
     # TODO: 스트리밍 적용
     
-    
+
+# streamlit 실행
