@@ -122,11 +122,127 @@ print(samsung.news)
 | get_recommendations() | 애널리스트들의 투자의견(Buy, Sell 등) 내역 조회 | - |
 | get_shares_full() | 발행 주식 수의 시간 경과에 따른 변동 내역 조회 | start, end |
 
-### 사용 시나리오  
+#### history - 과거 시세 조회  
 
 ```python
+# get Ticker
+samsung = yf.Ticker("005930.KS")
 
+# history
+his = samsung.history(period = "7d", interval = "1d")
+print(his)
+```
 
+또는  
+
+```python
+# get Ticker
+samsung = yf.Ticker("005930.KS")
+
+# history
+# start-end 에서 end 는 조회 기간에 포함되지 않는다. 따라서 마지막날짜 +1일로 조회해야 한다.
+his = samsung.history(start="2026-01-20", end="2026-01-29")
+print(his)
 ```
 
 
+- 요청 파라미터  
+
+| 파라미터 | 설명 | 허용되는 값 (예시) |
+| :--- | :--- | :--- |
+| period | 데이터를 가져올 전체 기간 (start/end와 함께 사용 불가) | 1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max |
+| interval | 데이터의 시간 간격 (봉의 단위) | 1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo, 3mo |
+| start | 데이터 추출 시작일 (문자열 또는 datetime) | 'YYYY-MM-DD' (예: '2024-01-01') |
+| end | 데이터 추출 종료일 (미포함 기준) | 'YYYY-MM-DD' (예: '2024-12-31') |
+| prepost | 장전/장후 시간외 거래 데이터 포함 여부 | True, False (기본값) |
+| auto_adjust | 배당, 주식 분할을 반영한 수정 주가 자동 계산 여부 | True (기본값), False |
+| actions | 배당(Dividends) 및 주식 분할(Splits) 데이터 포함 여부 | True (기본값), False |
+| proxy | 데이터 요청 시 사용할 프록시 서버 주소 | 문자열 (예: "127.0.0.1:8080") |
+| timeout | 응답을 기다릴 제한 시간(초) | 숫자 (기본값: 10) |
+
+```bash
+                               Open      High       Low     Close    Volume  Dividends  Stock Splits
+Date                                                                                                
+2026-01-20 00:00:00+09:00  148500.0  149300.0  143900.0  145200.0  24059218        0.0           0.0
+2026-01-21 00:00:00+09:00  141900.0  149800.0  141800.0  149500.0  31703610        0.0           0.0
+2026-01-22 00:00:00+09:00  155000.0  157000.0  150800.0  152300.0  32073624        0.0           0.0
+2026-01-23 00:00:00+09:00  154700.0  156000.0  150100.0  152100.0  25407497        0.0           0.0
+2026-01-26 00:00:00+09:00  154900.0  156400.0  151500.0  152100.0  20561689        0.0           0.0
+2026-01-27 00:00:00+09:00  150500.0  159500.0  149200.0  159500.0  29423670        0.0           0.0
+2026-01-28 00:00:00+09:00  162600.0  163300.0  160200.0  162400.0  29456431        0.0           0.0
+```
+
+- 반환되는 데이터프레임의 컬럼  
+
+| 컬럼명 | 설명 | 비고 |
+| :--- | :--- | :--- |
+| Open | 해당 기간의 시가 (시작 가격) | auto_adjust 설정에 영향받음 |
+| High | 해당 기간의 고가 (최고 가격) | auto_adjust 설정에 영향받음 |
+| Low | 해당 기간의 저가 (최저 가격) | auto_adjust 설정에 영향받음 |
+| Close | 해당 기간의 종가 (종료 가격) | auto_adjust 설정에 영향받음 |
+| Volume | 해당 기간의 거래량 | 숫자 |
+| Dividends | 해당 날짜에 지급된 배당금 | actions=True일 때 표시 |
+| Stock Splits | 해당 날짜에 발생한 주식 분할 비율 | actions=True일 때 표시 |
+
+
+#### get_recommendations - 투자의견  
+
+```python
+# get Ticker
+samsung = yf.Ticker("005930.KS")
+# history
+rec = samsung.get_recommendations
+print(rec)
+```
+
+```bash
+  period  strongBuy  buy  hold  sell  strongSell
+0     0m         10   23     1     1           0
+1    -1m         10   22     2     0           1
+2    -2m         10   21     3     0           1
+3    -3m         10   20     4     0           1
+```
+
+### 데이터프레임을 마크다운으로 표현  
+
+- yfinance 에서 출력되는 "데이터프레임" 형태의 결과값은 `to_markdown()` 함수를 통해 마크다운 형식으로 변환할 수 있다.  
+
+```python
+apple = yf.Ticker("APLE")
+hist = apple.history("3d")
+print(hist.to_markdown())
+```
+
+```bash
+| Date                      |   Open |   High |    Low |   Close |          Volume |   Dividends |   Stock Splits |
+|:--------------------------|-------:|-------:|-------:|--------:|----------------:|------------:|---------------:|
+| 2026-01-26 00:00:00-05:00 |  12.35 | 12.35  | 12.16  |   12.21 |      2.9147e+06 |           0 |              0 |
+| 2026-01-27 00:00:00-05:00 |  12.2  | 12.24  | 11.773 |   11.88 |      3.3231e+06 |           0 |              0 |
+| 2026-01-28 00:00:00-05:00 |  11.95 | 12.041 | 11.885 |   11.91 | 514875          |           0 |              0 |
+```
+
+- 마크다운이 아닌 경우  
+- 마크다운이 아닌 경우는 문자열이 아닌 객체임  
+
+```python
+apple = yf.Ticker("APLE")
+hist = apple.history("3d")
+print(hist)
+```
+
+```bash
+                            Open   High     Low  Close   Volume  Dividends  Stock Splits
+Date                                                                                    
+2026-01-26 00:00:00-05:00  12.35  12.35  12.160  12.21  2914700        0.0           0.0
+2026-01-27 00:00:00-05:00  12.20  12.24  11.773  11.88  3323100        0.0           0.0
+```
+
+- 단 이 기능을 이용하기 위해서는 `tabulate` 라이브러리가 필요하다.  
+
+```bash
+# pip
+pip install tabulate
+
+# uv
+uv add tabulate
+```
