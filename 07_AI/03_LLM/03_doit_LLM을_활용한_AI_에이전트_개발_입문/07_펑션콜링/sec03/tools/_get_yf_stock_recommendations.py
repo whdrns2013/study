@@ -3,7 +3,7 @@ import yfinance as yf
 
 def func(ticker:str):
     stock = yf.Ticker(ticker)
-    reco = stock.recommendations()
+    reco = stock.recommendations
     return str(reco.to_markdown())
 
 tool_def = {
