@@ -3,6 +3,7 @@ from config.config import config
 from schemas.dto import OpenAIMessage
 import json
 from tools.gpt_functions import tools, tool_mapping
+from utils.tool_list_to_tool_obj import tool_list_to_tool_obj
 
 def get_ai_response(messages:list[dict],
                     model:str,
@@ -18,7 +19,7 @@ def get_ai_response(messages:list[dict],
         tools = tools,
         stream = stream
     )
-    return response
+    return response # response 가 이미 실시간 제너레리터라 별도 yield 를 사용할 필요가 없음  
 
 def chat_gpt(user_message:str|None=None,
              system_message:str|None=None,
@@ -51,28 +52,43 @@ def chat_gpt(user_message:str|None=None,
                                stream=stream)
     
     # function calling 처리
-    if hasattr(response, "choices"):
-        if response.choices[0].message.tool_calls:
-            tool_calls = response.choices[0].message.tool_calls
-            for tool_call in tool_calls:
-                # LLM 응답에서 도구 정보 추출
-                tool_name = tool_call.function.name
-                tool_call_id = tool_call.id
-                arguments = json.loads(tool_call.function.arguments) 
-                
-                # 도구마다 사용 함수 매칭해서 도구의 결과를 메시지로 생성
-                messages = tool_mapping(messages = messages,
+    tool_calls = []
+    if stream:
+        tool_calls_chunk = []
+        for chunk in response:
+            if hasattr(chunk, "choices"):
+                if chunk.choices[0].delta.tool_calls:
+                    tool_calls_chunk += chunk.choices[0].delta.tool_calls
+        tool_obj = tool_list_to_tool_obj(tool_calls_chunk)
+        tool_calls = tool_obj["tool_calls"]
+        for tool_call in tool_calls:
+            tool_name = tool_call["function"]["name"]
+            tool_call_id = tool_call["id"]
+            arguments = json.loads(tool_call["function"]["arguments"])
+            messages = tool_mapping(messages = messages,
                                         tool_name = tool_name,
                                         tool_call_id = tool_call_id,
                                         arguments = arguments)
-            
-            # 한번 더 gpt 응답 호출, 이번엔 도구의 결과와 도구 호출 id를 포함함
-            messages.append({"role":"system", "content":"이제 주어진 결과들을 바탕으로 답변하시오"})
-            response = get_ai_response(messages, model=model, temperature=temperature, tools=tools)
+        messages.append({"role":"system", "content":"이제 주어진 결과들을 바탕으로 답변하시오"})
+        response = get_ai_response(messages, model=model, temperature=temperature, tools=tools, stream=stream)
+    else:
+        if hasattr(response, "choices"):
+            if response.choices[0].message.tool_calls:
+                tool_calls = response.choices[0].message.tool_calls
+                for tool_call in tool_calls:
+                    # LLM 응답에서 도구 정보 추출
+                    tool_name = tool_call.function.name
+                    tool_call_id = tool_call.id
+                    arguments = json.loads(tool_call.function.arguments) 
+                    
+                    # 도구마다 사용 함수 매칭해서 도구의 결과를 메시지로 생성
+                    messages = tool_mapping(messages = messages,
+                                            tool_name = tool_name,
+                                            tool_call_id = tool_call_id,
+                                            arguments = arguments)
+                
+                # 한번 더 gpt 응답 호출, 이번엔 도구의 결과와 도구 호출 id를 포함함
+                messages.append({"role":"system", "content":"이제 주어진 결과들을 바탕으로 답변하시오"})
+                response = get_ai_response(messages, model=model, temperature=temperature, tools=tools, stream=stream)
         
-    return response
-
-# 결과 텍스트 출력
-# response.choices[0].message.content
-
-# TODO: 스트리밍 적용
+    return response, tool_calls
