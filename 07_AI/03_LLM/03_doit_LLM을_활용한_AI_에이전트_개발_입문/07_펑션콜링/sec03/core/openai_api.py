@@ -51,23 +51,24 @@ def chat_gpt(user_message:str|None=None,
                                stream=stream)
     
     # function calling 처리
-    if response.choices[0].message.tool_calls:
-        tool_calls = response.choices[0].message.tool_calls
-        for tool_call in tool_calls:
-            # LLM 응답에서 도구 정보 추출
-            tool_name = tool_call.function.name
-            tool_call_id = tool_call.id
-            arguments = json.loads(tool_call.function.arguments) 
+    if hasattr(response, "choices"):
+        if response.choices[0].message.tool_calls:
+            tool_calls = response.choices[0].message.tool_calls
+            for tool_call in tool_calls:
+                # LLM 응답에서 도구 정보 추출
+                tool_name = tool_call.function.name
+                tool_call_id = tool_call.id
+                arguments = json.loads(tool_call.function.arguments) 
+                
+                # 도구마다 사용 함수 매칭해서 도구의 결과를 메시지로 생성
+                messages = tool_mapping(messages = messages,
+                                        tool_name = tool_name,
+                                        tool_call_id = tool_call_id,
+                                        arguments = arguments)
             
-            # 도구마다 사용 함수 매칭해서 도구의 결과를 메시지로 생성
-            messages = tool_mapping(messages = messages,
-                                    tool_name = tool_name,
-                                    tool_call_id = tool_call_id,
-                                    arguments = arguments)
-        
-        # 한번 더 gpt 응답 호출, 이번엔 도구의 결과와 도구 호출 id를 포함함
-        messages.append({"role":"system", "content":"이제 주어진 결과들을 바탕으로 답변하시오"})
-        response = get_ai_response(messages, model=model, temperature=temperature, tools=tools)
+            # 한번 더 gpt 응답 호출, 이번엔 도구의 결과와 도구 호출 id를 포함함
+            messages.append({"role":"system", "content":"이제 주어진 결과들을 바탕으로 답변하시오"})
+            response = get_ai_response(messages, model=model, temperature=temperature, tools=tools)
         
     return response
 
