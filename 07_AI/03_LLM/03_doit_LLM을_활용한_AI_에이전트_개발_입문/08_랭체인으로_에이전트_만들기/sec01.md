@@ -127,7 +127,7 @@ response_metadata={'token_usage': .... }
 import os
 from config.config import config
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 
 os.environ["OPENAI_API_KEY"] = config.get("apikey", "openai")
 messages = [SystemMessage(content="너는 사용자를 도와주는 상담사야")]
@@ -135,12 +135,13 @@ model = ChatOpenAI(model="gpt-4o-mini")
 
 while True:
     inp = input("user\t:")
-    if input == "exit":
+    if inp == "exit":
         break
     
     messages.append(HumanMessage(content=inp))       
     response = model.invoke(messages)
     print("AI\t:" + response.content)
+    messages.append(AIMessage(content=response.content))
 ```
 
 
