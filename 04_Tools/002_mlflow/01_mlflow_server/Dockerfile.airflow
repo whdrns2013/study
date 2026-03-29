@@ -1,0 +1,7 @@
+ARG AIRFLOW_ORIGIN_IMAGE_NAME=apache/airflow:3.1.8-python3.13 # .env 파일로부터 IMAGE 이름 로딩 
+
+FROM ${AIRFLOW_ORIGIN_IMAGE_NAME}
+USER airflow
+
+ARG AIRFLOW_EXTRAS            # .env 파일로부터 설치할 EXTRAS 로딩
+RUN pip install --no-cache-dir "apache-airflow[${AIRFLOW_EXTRAS}]"
