@@ -1,0 +1,8 @@
+services:
+  mcp_server:
+    build:
+      context: .
+      dockerfile: dockerfile/Dockerfile.mcp_server
+    ports:
+      - ${MCP_SERVER_PORT-8000}:8000
+    restart: unless-stopped

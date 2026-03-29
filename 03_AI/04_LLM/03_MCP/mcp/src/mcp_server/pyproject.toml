@@ -1,0 +1,13 @@
+[project]
+name = "mcp-server"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.128.0",
+    "mcp>=1.25.0",
+    "mcpo>=0.0.19",
+    "psycopg2-binary>=2.9.11",
+    "uvicorn>=0.40.0",
+]
