@@ -1,0 +1,4 @@
+*.pdf
+.venv
+secret.ini
+chroma_store
