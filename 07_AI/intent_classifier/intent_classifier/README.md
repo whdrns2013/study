@@ -1,6 +1,0 @@
-
-## Package Managing Tool  
-
-- uv  
-
-

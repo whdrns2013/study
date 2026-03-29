@@ -1,4 +1,0 @@
-**/*.dSYM
-*.exe
-**/tasks.json
-.vscode

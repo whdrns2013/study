@@ -1,4 +1,0 @@
-
-```bash
-uv sync
-```
