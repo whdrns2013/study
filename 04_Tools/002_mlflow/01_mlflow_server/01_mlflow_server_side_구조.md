@@ -49,7 +49,7 @@
 
 ### 세 가지 구조 설계 방안  
 
-![alt text](/assets/images/01_001.png)
+![alt text](assets/images/01_001.png)
 
 - (1) Localhost  
 - (2) Local Tracking with Local Database    
