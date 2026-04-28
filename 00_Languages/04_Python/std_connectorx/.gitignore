@@ -1,0 +1,4 @@
+config.ini
+.venv
+__pycache__
+time_check_result.csv
