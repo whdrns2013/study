@@ -26,7 +26,13 @@ def get_engine(baseurl:str=config["db"]["baseurl"],
                port:str=config["db"]["port"],
                db:str=config["db"]["db"]):
     url = f"{baseurl}{user}:{quote_plus(password)}@{host}:{port}/{db}"
-    engine = create_engine(url, echo=False)
+    connect_args = {
+        "connect_timeout": 30,
+        "read_timeout": 600,
+        "write_timeout": 600,
+        "charset": "utf8mb4",
+        }
+    engine = create_engine(url, echo=False, connect_args=connect_args)
     return engine
 
 def create_db(engine = get_engine()):
