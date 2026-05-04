@@ -1,0 +1,12 @@
+[project]
+name = "05-langgraph-ui"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.136.1",
+    "jupyterlab>=4.5.7",
+    "langgraph>=1.1.10",
+    "uvicorn>=0.46.0",
+]
