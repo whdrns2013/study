@@ -53,7 +53,7 @@ async def chat_completions(request: Request):
     # LangGraph 호출 예시
     ## 1. stream == false 인 경우
     if not stream:
-        result = app.invoke(state)
+        result = await app.ainvoke(state)
         return {
             "id": f"chatcmpl-{uuid.uuid4().hex}",
             "object": "chat.completion",
@@ -100,15 +100,19 @@ async def chat_completions(request: Request):
         yield f"data: {json.dumps(first_chunk, ensure_ascii=False)}\n\n"
         
         ### 2) 중간 chunk : content (실제 답변)
-        for msg, metadata in app.stream(state, stream_mode="messages"):
+        async for mode, chunk in app.astream(state, stream_mode=["messages", "custom"]): # message, custom 둘 모두 사용
             
-            if metadata.get("langgraph_node") != "llm":
-                continue
-            
-            content = msg.content
-            
-            if not content:
-                continue
+            # LLM 응답일 경우
+            if mode == "messages":
+                msg, metadata = chunk
+                if metadata.get("langgraph_node") != "llm":
+                    continue
+                content = msg.content
+                if not content:
+                    continue
+            # Custom Message 인 경우
+            elif mode == "custom":
+                content = chunk
             
             chunk = {
                 "id": response_id,
