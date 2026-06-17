@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 16px;
+    }
+
+    .box {
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    #display {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    #startedAt {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    button {
+      padding: 10px 18px;
+      margin: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <div id="display">00:00.00</div>
+    <div id="startedAt">시작일시: -</div>
+
+    <button onclick="startTimer()">시작</button>
+    <button onclick="stopTimer()">정지</button>
+    <button onclick="resetTimer()">초기화</button>
+    <button onclick="sendValue()">기록하기</button>
+  </div>
+
+  <script>
+    const Streamlit = {
+      setComponentReady: function() {
+        window.parent.postMessage(
+          {
+            isStreamlitMessage: true,
+            type: "streamlit:componentReady",
+            apiVersion: 1
+          },
+          "*"
+        );
+      },
+
+      setFrameHeight: function(height) {
+        window.parent.postMessage(
+          {
+            isStreamlitMessage: true,
+            type: "streamlit:setFrameHeight",
+            height: height
+          },
+          "*"
+        );
+      },
+
+      setComponentValue: function(value) {
+        window.parent.postMessage(
+          {
+            isStreamlitMessage: true,
+            type: "streamlit:setComponentValue",
+            value: value,
+            dataType: "json"
+          },
+          "*"
+        );
+      }
+    };
+
+    let startTime = 0;
+    let elapsed = 0;
+    let timerInterval = null;
+    let running = false;
+
+    let startDatetime = null;
+
+    function toLocalISOString(date) {
+      const offsetMs = date.getTimezoneOffset() * 60000;
+      const localDate = new Date(date.getTime() - offsetMs);
+      const iso = localDate.toISOString().slice(0, -1);
+
+      const offsetMinutes = -date.getTimezoneOffset();
+      const sign = offsetMinutes >= 0 ? "+" : "-";
+      const absOffset = Math.abs(offsetMinutes);
+      const hours = String(Math.floor(absOffset / 60)).padStart(2, "0");
+      const minutes = String(absOffset % 60).padStart(2, "0");
+
+      return iso + sign + hours + ":" + minutes;
+    }
+
+    function formatTime(ms) {
+      const minutes = Math.floor(ms / 60000);
+      const seconds = Math.floor((ms % 60000) / 1000);
+      const centiseconds = Math.floor((ms % 1000) / 10);
+
+      return String(minutes).padStart(2, "0") + ":" +
+             String(seconds).padStart(2, "0") + "." +
+             String(centiseconds).padStart(2, "0");
+    }
+
+    function getCurrentElapsed() {
+      if (running) {
+        return elapsed + Date.now() - startTime;
+      }
+      return elapsed;
+    }
+
+    function updateDisplay() {
+      document.getElementById("display").innerText =
+        formatTime(getCurrentElapsed());
+    }
+
+    function updateStartedAtDisplay() {
+      document.getElementById("startedAt").innerText =
+        startDatetime ? "시작일시: " + startDatetime : "시작일시: -";
+    }
+
+    function startTimer() {
+      if (!running) {
+        startTime = Date.now();
+
+        if (startDatetime === null && elapsed === 0) {
+          startDatetime = toLocalISOString(new Date());
+        }
+
+        running = true;
+        timerInterval = setInterval(updateDisplay, 50);
+        updateStartedAtDisplay();
+      }
+    }
+
+    function stopTimer() {
+      if (running) {
+        elapsed += Date.now() - startTime;
+        running = false;
+        clearInterval(timerInterval);
+        updateDisplay();
+      }
+    }
+
+    function resetTimer() {
+      elapsed = 0;
+      startTime = 0;
+      startDatetime = null;
+      running = false;
+      clearInterval(timerInterval);
+
+      updateDisplay();
+      updateStartedAtDisplay();
+
+      Streamlit.setComponentValue({
+        start_datetime: null,
+        elapsed_ms: 0
+      });
+    }
+
+    function sendValue() {
+      const current = Math.floor(getCurrentElapsed());
+
+      Streamlit.setComponentValue({
+        start_datetime: startDatetime,
+        elapsed_ms: current
+      });
+    }
+
+    Streamlit.setComponentReady();
+    Streamlit.setFrameHeight(260);
+    updateDisplay();
+    updateStartedAtDisplay();
+  </script>
+</body>
+</html>

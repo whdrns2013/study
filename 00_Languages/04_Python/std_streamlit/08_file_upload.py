@@ -5,7 +5,6 @@ import pandas as pd
 import base64
 
 st.title("08. File Upload")
-st.write("파일 업로드도 업청 편하다.")
 
 # 0. 이미지를 담고 있는 리스트
 if "image_list" not in st.session_state:
@@ -20,7 +19,14 @@ if uploaded_file:
     file_bytes = uploaded_file.getvalue()
     encoded_image = base64.b64encode(file_bytes).decode()
     mime_type = uploaded_file.type
-    st.session_state.image_list.append({"image_name":uploaded_file.name, "image":f"data:{mime_type};base64,{encoded_image}"})
+    st.session_state.image_list.append(
+        {
+            "id": uploaded_file.file_id,
+            "image_name": uploaded_file.name,
+            "image": f"data:{mime_type};base64,{encoded_image}",
+            "size": uploaded_file.size,
+        }
+        )
 
 # 3. 데이터프레임 표출
 config = {"image":st.column_config.ImageColumn()}
