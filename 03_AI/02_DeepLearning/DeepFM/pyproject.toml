@@ -1,0 +1,13 @@
+[project]
+name = "deepfm"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "deepctr>=0.9.4",
+    "jupyterlab>=4.5.8",
+    "pandas>=3.0.3",
+    "scikit-learn>=1.9.0",
+    "tensorflow>=2.21.0",
+]
