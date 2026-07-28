@@ -1,0 +1,14 @@
+[project]
+name = "007-chroma"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "chromadb>=1.5.8",
+]
+
+[dependency-groups]
+dev = [
+    "jupyterlab>=4.5.6",
+]
