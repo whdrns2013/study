@@ -25,6 +25,8 @@ mlflow.set_tracking_uri(server_uri)
 print(f"MLflow Tracking URI with server url def: {mlflow.get_tracking_uri()}")
 ```
 
+## 주의사항  
+
 ### tracking uri가 제대로 세팅되었는지 체크하기  
 
 - `get_experiment` 와 같은 메서드로 실험을 가져오는 등의 검증 작업을 거치면 된다.  
