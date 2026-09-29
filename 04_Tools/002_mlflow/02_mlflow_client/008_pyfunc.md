@@ -5,7 +5,7 @@
 > 모든 Flavor 들의 부모 클래스, 인터페이스이자  
 > Custom Flavor를 만들 수 있게 해주는 인터페이스  
 
-![](/images/model_save_and_load.png)  
+![](./images/model_save_and_load.png)  
 
 MLflow는 TensorFlow나 Scikit-learn 같은 특정 모델을 저장하고 관리하는 Flavor 라는 기능(Named Flavors)이 있다. 하지만 **만약 MLflow가 지원하지 않는 독특한 모델**이나, 모델에 복잡한 전처리/후처리 로직을 추가하고 싶다면 어떻게 해야 할까?  
 

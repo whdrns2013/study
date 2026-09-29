@@ -1,7 +1,7 @@
 
 ## Flavor  
 
-![](/images/flavor.png)  
+![](./images/flavor.png)  
 
 ### 정의  
 
