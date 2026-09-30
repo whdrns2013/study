@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+.test-deps/
+.uv-cache/
+*.egg-info/
+gru4rec_standard/examples/output/
+university_recommender/output/
