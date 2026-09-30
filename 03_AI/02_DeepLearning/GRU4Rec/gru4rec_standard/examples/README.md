@@ -66,7 +66,7 @@ workflow에서 같은 구성을 사용하려면 config의 train에 sequence_col/
 프로젝트 루트에서 실행합니다.
 
 ```powershell
-python -m gru4rec_standard.examples.run_example
+.venv/Scripts/python.exe -m gru4rec_standard.examples.run_example
 ```
 
 run_example.py에는 main() 진입점만 있습니다. direct/workflow 모드와 CLI 옵션은 제거했습니다. main은 config_definition.json/state_definition.json/steps_definition.json을 읽고, 명세의 file_name/function_name으로 함수를 로드하여 sequence 순서대로 Workflow를 실행합니다. 함수 선택용 레지스트리는 두지 않습니다. 현재 Orchestrator의 build_* 메서드는 수정하지 않았습니다.

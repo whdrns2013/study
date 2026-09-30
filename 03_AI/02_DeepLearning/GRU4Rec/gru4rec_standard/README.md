@@ -2,6 +2,14 @@
 
 표준 모델·학습·예측은 필요한 값을 명시적인 인자로 받으며 workflow, State, JSON에 의존하지 않습니다. 예제에서만 XXX_step 래퍼로 workflow에 연결합니다. 원본 대학 모델에 실제 적용하는 리팩터링은 별도 작업입니다.
 
+실행 기준은 Python 3.11입니다. pyproject.toml은 Python >=3.11,<3.12를 지정하며 .python-version도 3.11로 고정합니다. 다른 Python용 .test-deps 대신 3.11 전용 가상환경에 의존성을 설치합니다.
+
+```powershell
+uv venv --python 3.11 .venv
+uv pip install --python .venv/Scripts/python.exe -e .
+.venv/Scripts/python.exe -m gru4rec_standard.examples.run_example
+```
+
 ## 구성
 
 - model.py: 아이템 임베딩, 선택적 수치 특성 결합, GRU, 실제 아이템 점수 출력.
