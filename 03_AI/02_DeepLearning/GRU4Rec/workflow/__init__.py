@@ -7,6 +7,7 @@ from .workflow import (
     ConfigDefinition,
     StepDefinition,
     RuntimeContext,
+    ExecutionReporter,
     Orchestrator,
 )
 
@@ -20,4 +21,5 @@ __all__ = [
     "ConfigDefinition",
     "StepDefinition",
     "RuntimeContext",
+    "ExecutionReporter",
 ]

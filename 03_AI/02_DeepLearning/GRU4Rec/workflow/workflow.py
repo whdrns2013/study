@@ -98,10 +98,11 @@ class StepDefinition(TypedDict):
 
 class RuntimeContext(TypedDict):
     '''요청 컨텍스트 정보'''
-    execution_id       : str
-    requester_base_url : str
-    log_api            : str
-    auth_token         : str | None
+    execution_id           : str
+    requester_base_url     : str
+    log_endpoint           : str
+    status_update_endpoint : str
+    record_result_endpoint : str
 
 
 ###############################################
@@ -110,20 +111,54 @@ class RuntimeContext(TypedDict):
 
 import io
 import contextlib
+from urllib.request import Request, urlopen
+from urllib.parse import urlencode, urljoin
+from typing import Any
+import json
 
 class ExecutionReporter:
     '''요청자(요청 서버)에게 진행 상황과 결과를 리포팅'''
+    
     def __init__(self, runtime_context:RuntimeContext):
+        '''요청 컨텍스트 필요'''
         self.runtime_context = runtime_context
         
     def log(self, message:str):
-        pass
+        '''요청자(요청 서버)에 로깅'''
+        rc = self.runtime_context
+        url = urljoin(base=rc.get("requester_base_url"), url=rc.get("log_endpoint"))
+        data = urlencode({"execution_id":rc.get("execution_id"), "log":message}).encode("utf-8")
+        try:
+            request = Request(url, data=data, method="POST")
+            with urlopen(request, timeout=10) as response:
+                response.read()
+        except Exception as e:
+            print(e)
     
     def update_status(self, status:str):
-        pass
+        '''요청자(요청 서버)에 현재 작업(Execution) 상태 업데이트'''
+        rc = self.runtime_context
+        url = urljoin(base=rc.get("requester_base_url"), url=rc.get("status_update_endpoint"))
+        data = urlencode({"execution_id":rc.get("execution_id"), "status":status}).encode("utf-8")
+        try:
+            request = Request(url, data=data, method="POST")
+            with urlopen(request, timeout=10) as response:
+                response.read()
+        except Exception as e:
+            self.log(f"update status failed. {e}")
     
-    def record_result(self, result):
-        pass
+    def record_result(self, result:Any):
+        '''요청자(요청 서버)에 작업 결과를 기록 (직렬화 가능한 데이터만 기록하길 권장)'''
+        rc = self.runtime_context
+        url = urljoin(base=rc.get("requester_base_url"), url=rc.get("record_result_endpoint"))
+        try:
+            result = json.dumps(result) if isinstance(result, dict) or isinstance(result, list) else result
+            data = urlencode({"execution_id":rc.get("execution_id"), "result":result}).encode("utf-8")
+            request = Request(url, data=data, method="POST")
+            with urlopen(request, timeout=10) as response:
+                response.read()
+        except Exception as e:
+            self.log(f"record result failed. {e}")
 
 
 class Orchestrator:
