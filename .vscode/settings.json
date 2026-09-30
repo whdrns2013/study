@@ -11,7 +11,14 @@
         "titleBar.activeBackground": "#42b883",
         "titleBar.activeForeground": "#15202b",
         "titleBar.inactiveBackground": "#42b88399",
-        "titleBar.inactiveForeground": "#15202b99"
+        "titleBar.inactiveForeground": "#15202b99",
+        "activityBar.activeBorder": "#15202b",
+        "activityBarTop.activeBackground": "#65c89b",
+        "activityBarTop.activeBorder": "#15202b",
+        "activityBarTop.background": "#65c89b",
+        "activityBarTop.foreground": "#15202b",
+        "activityBarTop.inactiveForeground": "#15202b99",
+        "commandCenter.foreground": "#15202b"
     },
     "peacock.color": "#42b883"
 }
