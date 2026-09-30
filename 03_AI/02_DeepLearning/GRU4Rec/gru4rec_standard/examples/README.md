@@ -36,6 +36,31 @@ record = registration(manifest['model_uri'], 'clickstream-gru4rec', registry_pat
 
 학습 입력은 SessionId/ItemId/Time 이벤트 표이고 예측 입력은 실제 아이템 ID를 순서대로 나열한 한 세션 이력입니다. train의 모델·학습 옵션은 함수 시그니처에 명시했습니다. loss='label_smoothed'는 예제 손실 함수를 표준 train에 주입합니다.
 
+## 수치 특성과 사용자 윈도우로 확장
+
+전처리는 UserId, GapMinutes, SequencePosition도 생성합니다. GapMinutes는 같은 세션의 직전 클릭과의 시간 간격이며 세션 시작은 0입니다. SequencePosition은 세션 안에서 현재까지의 이벤트 위치입니다. 두 특성은 미래를 집계하지 않으며 기본 설정의 feature_cols=[]에서는 사용하지 않습니다. 이 예제는 스케일러를 학습하지 않습니다. 실제 데이터의 특성 생성과 스케일링은 케이스별 전처리에서 수행해야 합니다.
+
+```python
+feature_cols = ['GapMinutes', 'SequencePosition']
+catalog = events['ItemId'].drop_duplicates().tolist() + ['NEW_ITEM']
+trained = train(
+    events, sequence_col='UserId', training_mode='window', max_seq_len=20,
+    bptt_steps=None, use_padding=True, feature_cols=feature_cols,
+    item_catalog=catalog, loss='bpr', epochs=2,
+)
+history = events.loc[events['SessionId'].eq(events['SessionId'].iloc[0])].sort_values('Time')
+recommendations = predict(
+    trained['model'], history['ItemId'].tolist(), trained['item2idx'],
+    numeric_features=history[feature_cols],
+)
+```
+
+NEW_ITEM은 매핑만 추가한 미관측 아이템이며 이 설정만으로 선호를 학습하지 않습니다. 패딩이 켜지면 입력 인덱스는 1부터, 꺼지면 0부터입니다. 출력 점수에는 항상 실제 아이템만 포함합니다.
+
+workflow에서 같은 구성을 사용하려면 config의 train에 sequence_col/training_mode/use_padding/feature_cols를 지정하고, window 모드에서는 bptt_steps를 null로 바꿉니다. item_catalog는 config의 train에 목록으로 지정하거나 state에 런타임 표 또는 목록을 주입합니다. predict_step은 state의 numeric_features를 전달하므로 수치 특성을 사용할 때는 item_sequence와 행·컬럼 순서가 일치하는 행렬을 함께 주입해야 합니다. 예를 들어 item_sequence=["A", "B"]에 feature_cols=["GapMinutes", "SequencePosition"]이라면 numeric_features=[[0, 0], [3, 1]]처럼 실제 이력의 값을 전달합니다. 해당 수치 특성 모델에서 이 입력을 생략하면 오류입니다.
+
+세션 병렬에서 bptt_steps=N은 N개 배치 시점의 손실을 묶어 역전파합니다. 모델과 매핑의 인덱스 규칙을 학습 후 변경하지 않습니다. 아티팩트에는 수치 특성 차원·컬럼 순서·패딩 여부와 윈도우 길이 등도 저장합니다.
+
 ## 예제 실행
 
 프로젝트 루트에서 실행합니다.

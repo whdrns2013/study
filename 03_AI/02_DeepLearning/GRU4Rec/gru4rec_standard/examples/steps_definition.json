@@ -21,7 +21,7 @@
     "file_name": "gru4rec_standard/examples/train.py",
     "sequence": 3,
     "requires": ["events"],
-    "provides": ["model", "item2idx", "idx2item", "loss_history"]
+    "provides": ["model", "item2idx", "idx2item", "loss_history", "feature_cols"]
   },
   {
     "step_name": "predict",

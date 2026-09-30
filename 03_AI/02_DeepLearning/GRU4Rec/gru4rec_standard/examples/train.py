@@ -12,9 +12,16 @@ def label_smoothed_loss(logits, targets):
 def train(
     events: pd.DataFrame,
     *,
-    session_col: str = 'SessionId',
+    sequence_col: str = 'SessionId',
+    session_col: str | None = None,
     item_col: str = 'ItemId',
     time_col: str = 'Time',
+    feature_cols=None,
+    training_mode: str = 'session_parallel',
+    bptt_steps: int | None = None,
+    max_seq_len: int = 20,
+    use_padding: bool = False,
+    item_catalog=None,
     embedding_dim: int = 64,
     hidden_size: int = 128,
     num_layers: int = 1,
@@ -35,7 +42,9 @@ def train(
     '''이벤트 표와 명시적인 학습 인자를 받아 표준 GRU4Rec을 학습한다.'''
     selected_loss = label_smoothed_loss if loss == 'label_smoothed' else loss
     return standard_train(
-        events, session_col=session_col, item_col=item_col, time_col=time_col,
+        events, sequence_col=sequence_col, session_col=session_col, item_col=item_col, time_col=time_col,
+        feature_cols=feature_cols, training_mode=training_mode, bptt_steps=bptt_steps,
+        max_seq_len=max_seq_len, use_padding=use_padding, item_catalog=item_catalog,
         embedding_dim=embedding_dim, hidden_size=hidden_size, num_layers=num_layers,
         dropout=dropout, epochs=epochs, batch_size=batch_size, learning_rate=learning_rate,
         clip_grad_norm=clip_grad_norm, loss=selected_loss, num_negatives=num_negatives,
@@ -46,4 +55,7 @@ def train(
 
 def train_step(state, config):
     '''workflow 이벤트와 설정을 일반 학습 함수에 전달한다.'''
-    return train(state['events'], **config['train'])
+    options = dict(config['train'])
+    if 'item_catalog' in state:
+        options['item_catalog'] = state['item_catalog']
+    return train(state['events'], **options)

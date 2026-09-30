@@ -27,9 +27,12 @@ def data_preprocessing(
     new_session = gaps.isna() | gaps.gt(pd.Timedelta(minutes=gap_minutes))
     events = pd.DataFrame({
         'SessionId': new_session.cumsum(),
+        'UserId': frame[user_col],
         'ItemId': frame[item_col],
         'Time': frame[time_col],
+        'GapMinutes': gaps.dt.total_seconds().div(60).where(~new_session, 0.0),
     })
+    events['SequencePosition'] = events.groupby('SessionId', sort=False).cumcount().astype('float32')
     return events
 
 

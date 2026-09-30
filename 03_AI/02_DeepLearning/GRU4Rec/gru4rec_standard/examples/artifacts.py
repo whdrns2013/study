@@ -16,11 +16,19 @@ def artifacts(model, item2idx: dict, output_dir, *, evaluation_report=None):
         'hidden_size': model.gru.hidden_size,
         'num_layers': model.gru.num_layers,
         'dropout': model.output_dropout.p,
+        'numeric_feature_dim': model.numeric_feature_dim,
+        'use_padding': model.use_padding,
+        'feature_cols': list(model.feature_cols),
     }
     torch.save({
         'model_state_dict': {key: value.detach().cpu().clone() for key, value in model.state_dict().items()},
         'model_parameters': parameters,
         'item2idx': dict(item2idx),
+        'training_metadata': {
+            'training_mode': getattr(model, 'training_mode', None),
+            'max_seq_len': getattr(model, 'max_seq_len', None),
+            'bptt_steps': getattr(model, 'bptt_steps', None),
+        },
     }, model_path)
     report_path.write_text(json.dumps(evaluation_report or {}, indent=2), encoding='utf-8')
     return {'model_uri': str(model_path), 'evaluation_uri': str(report_path)}

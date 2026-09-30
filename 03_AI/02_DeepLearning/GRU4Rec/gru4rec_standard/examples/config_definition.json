@@ -11,9 +11,15 @@
     "session_gap_minutes": 30
   },
   "train": {
-    "session_col": "SessionId",
+    "sequence_col": "SessionId",
     "item_col": "ItemId",
     "time_col": "Time",
+    "feature_cols": [],
+    "training_mode": "session_parallel",
+    "bptt_steps": 1,
+    "max_seq_len": 20,
+    "use_padding": false,
+    "item_catalog": null,
     "embedding_dim": 64,
     "hidden_size": 128,
     "num_layers": 1,
