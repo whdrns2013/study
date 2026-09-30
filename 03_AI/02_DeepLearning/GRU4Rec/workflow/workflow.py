@@ -106,6 +106,24 @@ class RuntimeContext(TypedDict):
 # 외부 요청 해석 및 워크플로 수행
 ###############################################
 
+import io
+import contextlib
+
+class ExecutionReporter:
+    '''요청자(요청 서버)에게 진행 상황과 결과를 리포팅'''
+    def __init__(self, runtime_context:RuntimeContext):
+        self.runtime_context = runtime_context
+        
+    def log(self, message:str):
+        pass
+    
+    def update_status(self, status:str):
+        pass
+    
+    def record_result(self, result):
+        pass
+
+
 class Orchestrator:
     '''외부 요청을 해석해 워크플로를 구성하고, 일련의 작업을 수행케 하는 클래스'''
     
@@ -124,6 +142,7 @@ class Orchestrator:
         self.config          = self.build_config(config_definition)
         self.workflow        = self.build_workflow(steps_definition)
         self.runtime_context = self.build_runtime_context(runtime_context)
+        self.reporter        = ExecutionReporter(self.runtime_context)
         self.copy_state      = copy_state
     
     def validate(self, state:StateDefinition, config:ConfigDefinition, steps:list[StepDefinition], runtime_context:RuntimeContext):
@@ -152,10 +171,22 @@ class Orchestrator:
     def build_runtime_context(self, runtime_context_def:RuntimeContext) -> RuntimeContext:
         '''요청자에 대한 정보 등을 포함하는 요청 컨텍스트를 알맞게 등록'''
         pass
-        
+    
     def run(self) -> State:
         '''주입된 워크플로를 실행하고 최종 상태를 반환한다.'''
-        self.state = self.workflow.run(
-            self.state, self.config, copy_state=self.copy_state
-        )
+        buffer = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buffer):
+                self.state = self.workflow.run(
+                    self.state, self.config, copy_state=self.copy_state
+                )
+            output = buffer.getvalue()
+            self.reporter.log(output)
+            self.reporter.update_status("SUCCESS")
+            self.reporter.record_result(self.state)
+        except Exception as e:
+            output = buffer.getvalue()
+            self.reporter.log(output)
+            self.reporter.update_status("FAIL")
+            self.reporter.record_result(e)
         return self.state
