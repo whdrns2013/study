@@ -46,7 +46,7 @@ def predict(
             raise ValueError('Prediction feature columns and order must match training feature_cols')
         numeric_features = numeric_features.to_numpy(dtype=np.float32)
     if numeric_features is not None:
-        numeric = np.asarray(numeric_features, dtype=np.float32)
+        numeric = np.array(numeric_features, dtype=np.float32, copy=True)
         if numeric.shape != (len(sequence), model.numeric_feature_dim) or not np.isfinite(numeric).all():
             raise ValueError('numeric_features must be finite with shape [history_length, numeric_feature_dim]')
     elif model.numeric_feature_dim:
