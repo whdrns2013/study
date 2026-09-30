@@ -1,0 +1,21 @@
+{
+  "user_col": "USER_ID",
+  "item_col": "ITEM_ID",
+  "time_col": "event_time",
+  "test_ratio": 0.2,
+  "random_state": 42,
+  "holdout_size": 1,
+  "session_gap_min": 30,
+  "max_seq_len": 20,
+  "item_embedding_dim": 64,
+  "hidden_size": 128,
+  "num_layers": 1,
+  "dropout": 0.2,
+  "epochs": 30,
+  "batch_size": 512,
+  "learning_rate": 0.001,
+  "clip_grad_norm": 5.0,
+  "num_workers": 0,
+  "device": null,
+  "top_k": 10
+}
