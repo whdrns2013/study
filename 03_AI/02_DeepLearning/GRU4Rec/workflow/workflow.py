@@ -115,6 +115,10 @@ from urllib.request import Request, urlopen
 from urllib.parse import urlencode, urljoin
 from typing import Any
 import json
+import importlib.util
+from pathlib import Path
+import sys
+from uuid import uuid4
 
 class ExecutionReporter:
     '''요청자(요청 서버)에게 진행 상황과 결과를 리포팅'''
@@ -194,20 +198,44 @@ class Orchestrator:
             raise ValueError(f"Missing fields : {'.'.join(missings)}")
 
     def build_state(self, state_def:StateDefinition) -> State:
-        '''외부에서 주입된 JSON-Like State를 State 인스턴스로 생성 후 self.state에 등록'''
-        pass
+        '''주입된 값을 유지하면서 초기 상태 dict를 만들어 반환한다.'''
+        return dict(state_def)
 
     def build_config(self, config_def:ConfigDefinition) -> Config:
         '''외부에서 주입된 JSON-Like Config를 Config 인스턴스로 생성 후 self.config에 등록'''
-        pass
+        return dict(config_def)
 
     def build_workflow(self, steps_def:list[StepDefinition]) -> Workflow:
         '''파일에서 진입점 함수를 로드하고, sequence 순으로 Step을 배치하여 워크플로를 구성한다.'''
-        pass
+        steps = []
+        modules = {}
+        for definition in sorted(steps_def, key=lambda step: step["sequence"]):
+            path = Path(definition["file_name"]).resolve(strict=True)
+            if path not in modules:
+                module_name = f"_workflow_step_{uuid4().hex}"
+                spec = importlib.util.spec_from_file_location(module_name, path)
+                if spec is None or spec.loader is None:
+                    raise ImportError(f"Cannot load step file: {path}")
+                module = importlib.util.module_from_spec(spec)
+                sys.modules[module_name] = module
+                try:
+                    spec.loader.exec_module(module)
+                except BaseException:
+                    sys.modules.pop(module_name, None)
+                    raise
+                modules[path] = module
+            function = getattr(modules[path], definition["function_name"])
+            steps.append(Step(
+                function,
+                name=definition["step_name"],
+                requires=definition["requires"],
+                provides=definition["provides"],
+            ))
+        return Workflow(steps)
     
     def build_runtime_context(self, runtime_context_def:RuntimeContext) -> RuntimeContext:
         '''요청자에 대한 정보 등을 포함하는 요청 컨텍스트를 알맞게 등록'''
-        pass
+        return dict(runtime_context_def)
     
     def run(self) -> State:
         '''주입된 워크플로를 실행하고 최종 상태를 반환한다.'''
