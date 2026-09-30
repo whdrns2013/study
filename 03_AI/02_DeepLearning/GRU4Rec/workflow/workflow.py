@@ -89,10 +89,12 @@ class ConfigDefinition(TypedDict):
 
 class StepDefinition(TypedDict):
     '''외부에서 주입되는 Step Input'''
-    step_name          :Annotated[str, "스텝의 명칭"]
-    function_name      :Annotated[str, "스텝이 수행할 작업이 정의된 함수 이름"]
-    file_name          :Annotated[str, "function이 포함된 파일 이름"]
-    sequence           :Annotated[int, "스텝의 수행 순서"]
+    step_name     :Annotated[str, "스텝의 명칭"]
+    function_name :Annotated[str, "스텝이 수행할 작업이 정의된 함수 이름"]
+    file_name     :Annotated[str, "function이 포함된 파일 이름"]
+    sequence      :Annotated[int, "스텝의 수행 순서"]
+    requires      :Annotated[list[str], "필요로 하는 state의 key 집합"]
+    provides      :Annotated[list[str], "반환하는 state의 key 집합"]
 
 class RuntimeContext(TypedDict):
     '''요청 컨텍스트 정보'''

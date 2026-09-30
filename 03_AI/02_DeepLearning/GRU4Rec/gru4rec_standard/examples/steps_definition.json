@@ -1,0 +1,58 @@
+[
+  {
+    "step_name": "load_data",
+    "function_name": "load_data_step",
+    "file_name": "gru4rec_standard/examples/load_data.py",
+    "sequence": 1,
+    "requires": [],
+    "provides": ["raw_data"]
+  },
+  {
+    "step_name": "preprocessing",
+    "function_name": "preprocessing_step",
+    "file_name": "gru4rec_standard/examples/preprocessing.py",
+    "sequence": 2,
+    "requires": ["raw_data"],
+    "provides": ["events"]
+  },
+  {
+    "step_name": "train",
+    "function_name": "train_step",
+    "file_name": "gru4rec_standard/examples/train.py",
+    "sequence": 3,
+    "requires": ["events"],
+    "provides": ["model", "item2idx", "idx2item", "loss_history"]
+  },
+  {
+    "step_name": "predict",
+    "function_name": "predict_step",
+    "file_name": "gru4rec_standard/examples/predict.py",
+    "sequence": 4,
+    "requires": ["model", "item_sequence", "item2idx"],
+    "provides": ["predictions"]
+  },
+  {
+    "step_name": "evaluation",
+    "function_name": "evaluation_step",
+    "file_name": "gru4rec_standard/examples/evaluation.py",
+    "sequence": 5,
+    "requires": ["model", "events", "item2idx"],
+    "provides": ["evaluation_report"]
+  },
+  {
+    "step_name": "artifacts",
+    "function_name": "artifacts_step",
+    "file_name": "gru4rec_standard/examples/artifacts.py",
+    "sequence": 6,
+    "requires": ["model", "item2idx", "evaluation_report"],
+    "provides": ["artifact_manifest"]
+  },
+  {
+    "step_name": "registration",
+    "function_name": "registration_step",
+    "file_name": "gru4rec_standard/examples/registration.py",
+    "sequence": 7,
+    "requires": ["artifact_manifest"],
+    "provides": ["registration"]
+  }
+]

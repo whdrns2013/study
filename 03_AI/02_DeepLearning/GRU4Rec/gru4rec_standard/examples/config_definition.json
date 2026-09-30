@@ -1,0 +1,48 @@
+{
+  "load_data": {
+    "csv_path": "data/clicks.csv",
+    "user_col": "user_id",
+    "item_col": "product_id"
+  },
+  "preprocessing": {
+    "user_col": "user_id",
+    "item_col": "product_id",
+    "time_col": "clicked_at",
+    "session_gap_minutes": 30
+  },
+  "train": {
+    "session_col": "SessionId",
+    "item_col": "ItemId",
+    "time_col": "Time",
+    "embedding_dim": 64,
+    "hidden_size": 128,
+    "num_layers": 1,
+    "dropout": 0.2,
+    "epochs": 2,
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "clip_grad_norm": 5.0,
+    "loss": "cross_entropy",
+    "num_negatives": 1,
+    "optimizer": "adam",
+    "optimizer_kwargs": {},
+    "shuffle_sessions": true,
+    "random_state": 42,
+    "device": "cpu"
+  },
+  "predict": {
+    "top_k": 10,
+    "exclude_seen": true,
+    "score_transform": "raw"
+  },
+  "evaluation": {
+    "top_k": 10
+  },
+  "artifacts": {
+    "output_dir": "output"
+  },
+  "registration": {
+    "model_name": "clickstream-gru4rec",
+    "registry_path": "output/registrations.json"
+  }
+}
